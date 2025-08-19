@@ -47,11 +47,11 @@ export default function Configurator({
   return (
     <div className="flex flex-col gap-8">
       <header className="text-center max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl md:text-6xl">
-          Configurador de Soluciones de IA
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">
+          Configura tu Solución a Medida
         </h1>
         <p className="mt-4 text-lg text-muted-foreground sm:text-xl">
-          Construya su solución a medida en tres sencillos pasos.
+          Personaliza tu plan de IA ideal en minutos.
         </p>
       </header>
 
