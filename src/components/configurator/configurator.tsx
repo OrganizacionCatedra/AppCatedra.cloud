@@ -10,7 +10,11 @@ import { Progress } from '@/components/ui/progress';
 
 type Step = 'customer' | 'products' | 'confirmation';
 
-export default function Configurator() {
+export default function Configurator({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const [step, setStep] = useState<Step>('customer');
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo | null>(null);
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>([]);
@@ -78,7 +82,7 @@ export default function Configurator() {
               exit={{ opacity: 0, x: 50 }}
               transition={{ duration: 0.3 }}
             >
-              <CustomerForm onSubmit={handleCustomerSubmit} />
+              <CustomerForm onSubmit={handleCustomerSubmit} searchParams={searchParams} />
             </motion.div>
           )}
 

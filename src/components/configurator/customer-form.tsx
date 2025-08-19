@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { customerInfoSchema } from '@/lib/schemas';
@@ -8,23 +9,34 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowRight } from 'lucide-react';
 
 interface CustomerFormProps {
   onSubmit: (data: CustomerInfo) => void;
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-export default function CustomerForm({ onSubmit }: CustomerFormProps) {
+export default function CustomerForm({ onSubmit, searchParams }: CustomerFormProps) {
+  const emailFromQuery = searchParams?.email ? String(searchParams.email) : '';
+
   const form = useForm<CustomerInfo>({
     resolver: zodResolver(customerInfoSchema),
     defaultValues: {
       name: '',
-      email: '',
+      email: emailFromQuery,
       phone: '',
       company: '',
       country: '',
+      consent: false,
     },
   });
+
+  useEffect(() => {
+    if (emailFromQuery) {
+      form.setValue('email', emailFromQuery);
+    }
+  }, [emailFromQuery, form]);
 
   return (
     <Card className="max-w-2xl mx-auto border-primary/20 shadow-lg shadow-primary/5">
@@ -100,6 +112,26 @@ export default function CustomerForm({ onSubmit }: CustomerFormProps) {
                       <Input placeholder="País de residencia" {...field} />
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="consent"
+                render={({ field }) => (
+                  <FormItem className="sm:col-span-2 flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>
+                        Acepto los términos y condiciones
+                      </FormLabel>
+                       <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
