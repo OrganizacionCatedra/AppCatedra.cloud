@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%; /* Gris muy oscuro, #121212 */
+    --background: 220 13% 11%; /* Gris oscuro aclarado */
     --foreground: 210 40% 98%;
     --card: 240 10% 3.9%;
     --card-foreground: 210 40% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 255 34% 51%; /* Morado oscuro, #624CAB */
+    --primary: 205 90% 45%; /* Cian/Azul brillante */
     --primary-foreground: 210 40% 98%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 90 100% 44%; /* Verde eléctrico, #7CFC00 */
-    --accent-foreground: 255 34% 51%; /* Morado oscuro para contraste */
+    --accent: 185 90% 45%; /* Verde azulado brillante */
+    --accent-foreground: 220 13% 11%; /* Fondo para contraste */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 255 34% 51%;
+    --ring: 205 90% 45%;
     --radius: 0.8rem;
   }
 
   .dark {
-    --background: 240 10% 3.9%; /* Gris muy oscuro, #121212 */
+    --background: 220 13% 11%; /* Gris oscuro aclarado */
     --foreground: 210 40% 98%;
     --card: 240 10% 3.9%;
     --card-foreground: 210 40% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 255 34% 51%; /* Morado oscuro, #624CAB */
+    --primary: 205 90% 45%; /* Cian/Azul brillante */
     --primary-foreground: 210 40% 98%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 90 100% 44%; /* Verde eléctrico, #7CFC00 */
-    --accent-foreground: 240 10% 3.9%; /* Gris oscuro para contraste */
+    --accent: 185 90% 45%; /* Verde azulado brillante */
+    --accent-foreground: 220 13% 11%; /* Fondo para contraste */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 255 34% 51%;
+    --ring: 205 90% 45%;
   }
 }
 
@@ -61,10 +61,10 @@
 .gradient-mesh {
   background-color: hsl(var(--background));
   background-image:
-    radial-gradient(at 15% 20%, hsla(255, 34%, 51%, 0.2) 0px, transparent 50%),
-    radial-gradient(at 85% 30%, hsla(90, 100%, 44%, 0.1) 0px, transparent 50%),
-    radial-gradient(at 20% 80%, hsla(255, 34%, 51%, 0.15) 0px, transparent 50%),
-    radial-gradient(at 75% 90%, hsla(90, 100%, 44%, 0.15) 0px, transparent 50%);
+    radial-gradient(at 15% 20%, hsla(205, 90%, 45%, 0.2) 0px, transparent 50%),
+    radial-gradient(at 85% 30%, hsla(185, 90%, 45%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 20% 80%, hsla(205, 90%, 45%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 75% 90%, hsla(185, 90%, 45%, 0.15) 0px, transparent 50%);
 }
 
 .thumb-accent > div {

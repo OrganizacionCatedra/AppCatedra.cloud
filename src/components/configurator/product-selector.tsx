@@ -108,7 +108,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                   onClick={() => setActiveCategory('all')}
                   className={cn(
                     "rounded-full flex-1 justify-center text-foreground font-medium transition-all duration-300",
-                    activeCategory === 'all' ? 'bg-primary text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
+                    activeCategory === 'all' ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
                   )}
                 >
                   <LayoutGrid className="mr-2 h-4 w-4" />
@@ -121,7 +121,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                     onClick={() => setActiveCategory(category.id)}
                     className={cn(
                       "rounded-full flex-1 justify-center text-foreground font-medium transition-all duration-300",
-                      activeCategory === category.id ? 'bg-primary text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
+                      activeCategory === category.id ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
                     )}
                   >
                     <category.icon className="mr-2 h-4 w-4" />
