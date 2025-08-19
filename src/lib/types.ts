@@ -17,10 +17,11 @@ export interface Product {
   type: 'switch' | 'select';
 }
 
-export interface Category {
+export interface ProductCategory {
   id: string;
   name: string;
   description: string;
+  icon: React.ComponentType<{ className?: string }>;
   products: Product[];
 }
 
@@ -29,6 +30,7 @@ export interface SelectedProduct {
   name: string;
   price: number;
   option?: ProductOption;
+  category: string;
 }
 
 export type CustomerInfo = z.infer<typeof customerInfoSchema>;

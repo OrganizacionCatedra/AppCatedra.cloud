@@ -1,11 +1,12 @@
-import { Bot, Server, BrainCircuit, Rocket } from 'lucide-react';
-import type { Category } from './types';
+import { Bot, Server, BrainCircuit, Rocket, Link, BarChart, Wrench } from 'lucide-react';
+import type { ProductCategory } from './types';
 
-export const productCategories: Category[] = [
+export const productCategories: ProductCategory[] = [
   {
     id: 'bots',
-    name: 'Bots Personalizados',
+    name: 'Bots',
     description: 'Automatice tareas y mejore la interacción con nuestros bots inteligentes.',
+    icon: Bot,
     products: [
       {
         id: 'bot-atencion-cliente',
@@ -27,8 +28,9 @@ export const productCategories: Category[] = [
   },
   {
     id: 'infraestructura',
-    name: 'Infraestructura y Hosting',
+    name: 'Infraestructura',
     description: 'Soluciones de hosting optimizadas para el rendimiento de sus aplicaciones de IA.',
+    icon: Server,
     products: [
       {
         id: 'hosting',
@@ -47,8 +49,9 @@ export const productCategories: Category[] = [
   },
   {
     id: 'ia-models',
-    name: 'Modelos de IA',
+    name: 'Modelos IA',
     description: 'Integre la potencia de los modelos de IA más avanzados en sus productos.',
+    icon: BrainCircuit,
     products: [
       {
         id: 'gemini-pro',
@@ -60,4 +63,25 @@ export const productCategories: Category[] = [
       },
     ],
   },
+  {
+    id: 'integrations',
+    name: 'Integraciones',
+    description: 'Conecte sus herramientas favoritas.',
+    icon: Link,
+    products: []
+  },
+  {
+    id: 'analytics',
+    name: 'Analítica',
+    description: 'Visualice y entienda sus datos.',
+    icon: BarChart,
+    products: []
+  },
+  {
+    id: 'support',
+    name: 'Soporte',
+    description: 'Planes de soporte técnico.',
+    icon: Wrench,
+    products: []
+  }
 ];
