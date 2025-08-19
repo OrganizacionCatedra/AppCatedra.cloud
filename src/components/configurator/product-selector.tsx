@@ -25,7 +25,6 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
   useEffect(() => {
-    // Pre-select default options for 'select' type products
     const initialSelections: Record<string, SelectedProduct> = {};
     productCategories.forEach(category => {
       category.products.forEach(product => {
@@ -101,13 +100,13 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
             </div>
           </CardHeader>
           <CardContent>
-            <div className="p-1.5 rounded-full bg-primary/10 flex items-center gap-2 mb-6">
+            <div className="p-1.5 rounded-full bg-black/30 flex items-center gap-2 mb-6">
               <Button
                 size="sm"
                 onClick={() => setActiveCategory('all')}
                 className={cn(
-                  "rounded-full flex-1 justify-center text-foreground font-medium",
-                  activeCategory === 'all' ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent'
+                  "rounded-full flex-1 justify-center text-foreground font-medium transition-all duration-300",
+                  activeCategory === 'all' ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
                 )}
               >
                 <LayoutGrid className="mr-2 h-4 w-4" />
@@ -119,8 +118,8 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                   size="sm"
                   onClick={() => setActiveCategory(category.id)}
                   className={cn(
-                    "rounded-full flex-1 justify-center text-foreground font-medium",
-                    activeCategory === category.id ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent'
+                    "rounded-full flex-1 justify-center text-foreground font-medium transition-all duration-300",
+                    activeCategory === category.id ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
                   )}
                 >
                   <category.icon className="mr-2 h-4 w-4" />
@@ -142,18 +141,18 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                     <div className="p-4 rounded-xl border border-primary/20 bg-black/30 h-full flex flex-col justify-between">
                       <div>
                         {categoryInfo && (
-                           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-primary/20 text-primary-foreground mb-3">
+                           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-primary/20 text-primary mb-3">
                               <categoryInfo.icon className="w-4 h-4"/>
                               {categoryInfo.name}
                            </div>
                         )}
                         <h3 className="text-lg font-semibold text-foreground">{product.name}</h3>
-                        <p className="text-sm text-muted-foreground mt-1 mb-4">{product.description}</p>
+                        <p className="text-sm text-muted-foreground mt-1 mb-4 h-10">{product.description}</p>
                       </div>
 
-                      <div className="flex items-center justify-end gap-4">
+                      <div className="flex items-center justify-between gap-4 mt-4">
                         {product.type === 'switch' && (
-                          <div className="flex items-center gap-4">
+                           <>
                             <span className="font-mono text-lg text-accent">
                                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)}
                             </span>
@@ -162,24 +161,26 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                                 checked={!!selectedProducts[product.id]}
                                 onCheckedChange={(checked) => handleSwitchChange(product, product.category, checked)}
                             />
-                          </div>
+                           </>
                         )}
                         {product.type === 'select' && product.options && (
-                          <Select
-                            onValueChange={(optionId) => handleSelectChange(product, product.category, optionId)}
-                            value={selectedProducts[product.id]?.option?.id}
-                          >
-                            <SelectTrigger className="w-full sm:w-[200px] bg-background">
-                              <SelectValue placeholder="Seleccione una opción" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {product.options.map(option => (
-                                <SelectItem key={option.id} value={option.id}>
-                                  {option.label} ({new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(option.price)})
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                          <div className='w-full'>
+                            <Select
+                                onValueChange={(optionId) => handleSelectChange(product, product.category, optionId)}
+                                value={selectedProducts[product.id]?.option?.id || product.options[0].id}
+                            >
+                                <SelectTrigger className="w-full bg-background border-white/20">
+                                <SelectValue placeholder="Seleccione una opción" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                {product.options.map(option => (
+                                    <SelectItem key={option.id} value={option.id}>
+                                    {option.label} ({new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(option.price)})
+                                    </SelectItem>
+                                ))}
+                                </SelectContent>
+                            </Select>
+                          </div>
                         )}
                       </div>
                     </div>
