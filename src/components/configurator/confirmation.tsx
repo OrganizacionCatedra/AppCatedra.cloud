@@ -50,7 +50,7 @@ export default function Confirmation({ customerInfo, selectedProducts, totalCost
 
     if (status === 'success') {
         return (
-            <Card className="max-w-2xl mx-auto text-center py-8 border-green-500/20 shadow-lg shadow-green-500/5 backdrop-blur-sm bg-card/80">
+            <Card className="max-w-2xl mx-auto text-center py-8 shadow-lg shadow-green-500/10">
                 <CardHeader>
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
                     <CardTitle className="mt-4 text-2xl">¡Gracias por su pedido!</CardTitle>
@@ -70,7 +70,7 @@ export default function Confirmation({ customerInfo, selectedProducts, totalCost
 
     return (
         <div className="max-w-2xl mx-auto">
-            <Card className="backdrop-blur-sm bg-card/80">
+            <Card>
                 <CardHeader>
                     <CardTitle>Confirmar Pedido</CardTitle>
                     <CardDescription>
@@ -96,7 +96,7 @@ export default function Confirmation({ customerInfo, selectedProducts, totalCost
                            <ArrowLeft className="mr-2 h-4 w-4" />
                            Modificar Pedido
                        </Button>
-                       <Button onClick={handlePayment} size="lg" disabled={status === 'processing'} className="bg-accent text-accent-foreground hover:bg-accent/90">
+                       <Button onClick={handlePayment} size="lg" disabled={status === 'processing'} className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20">
                            {status === 'processing' ? (
                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                            ) : null}

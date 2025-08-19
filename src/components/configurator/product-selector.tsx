@@ -79,7 +79,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: catIndex * 0.1 }}
           >
-            <Card className="overflow-hidden backdrop-blur-sm bg-card/80">
+            <Card className="overflow-hidden">
               <CardHeader className="bg-primary/5">
                 <CardTitle>{category.name}</CardTitle>
                 <CardDescription>{category.description}</CardDescription>
@@ -135,7 +135,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
           totalCost={totalCost}
         >
           <div className="flex flex-col gap-4 mt-6 w-full">
-             <Button onClick={handleSubmit} size="lg" disabled={totalCost === 0} className="bg-accent text-accent-foreground hover:bg-accent/90">
+             <Button onClick={handleSubmit} size="lg" disabled={totalCost === 0} className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20">
                <ShoppingCart className="mr-2 h-5 w-5" />
                Proceder a Confirmación
              </Button>

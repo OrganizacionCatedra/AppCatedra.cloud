@@ -16,7 +16,7 @@ export default function Summary({ customerInfo, selectedProducts, totalCost, chi
     };
 
     return (
-        <Card className="backdrop-blur-sm bg-card/80">
+        <Card>
             <CardHeader>
                 <CardTitle>Resumen del Pedido</CardTitle>
                 <CardDescription>Para: {customerInfo.name} ({customerInfo.company})</CardDescription>

@@ -39,7 +39,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
   }, [emailFromQuery, form]);
 
   return (
-    <Card className="max-w-2xl mx-auto backdrop-blur-sm bg-card/80">
+    <Card className="max-w-2xl mx-auto">
       <CardHeader>
         <CardTitle>Comencemos con sus datos</CardTitle>
         <CardDescription>
