@@ -1,5 +1,7 @@
 import type { z } from 'zod';
 import type { customerInfoSchema } from './schemas';
+import type { LucideProps } from 'lucide-react';
+import type { ForwardRefExoticComponent, RefAttributes } from 'react';
 
 export interface ProductOption {
   id: string;
@@ -7,12 +9,13 @@ export interface ProductOption {
   price: number;
 }
 
+// Making icon optional as not all products might have a specific one
 export interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
-  icon: React.ComponentType<{ className?: string }>;
+  icon?: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
   options?: ProductOption[];
   type: 'switch' | 'select';
 }
@@ -21,7 +24,7 @@ export interface ProductCategory {
   id: string;
   name: string;
   description: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
   products: Product[];
 }
 

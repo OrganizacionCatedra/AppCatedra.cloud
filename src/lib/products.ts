@@ -1,4 +1,4 @@
-import { Bot, Server, BrainCircuit, Rocket, Link, BarChart, Wrench } from 'lucide-react';
+import { Bot, Server, BrainCircuit, Rocket, Link, BarChart, Wrench, GitBranch, ShoppingCart } from 'lucide-react';
 import type { ProductCategory } from './types';
 
 export const productCategories: ProductCategory[] = [
@@ -68,20 +68,60 @@ export const productCategories: ProductCategory[] = [
     name: 'Integraciones',
     description: 'Conecte sus herramientas favoritas.',
     icon: Link,
-    products: []
+    products: [
+      {
+        id: 'integration-github',
+        name: 'Integración con GitHub',
+        description: 'Automatice flujos de trabajo de desarrollo y despliegue continuo.',
+        price: 350,
+        icon: GitBranch,
+        type: 'switch',
+      },
+      {
+        id: 'integration-shopify',
+        name: 'Integración con Shopify',
+        description: 'Sincronice productos, pedidos y clientes para su bot de ventas.',
+        price: 400,
+        icon: ShoppingCart,
+        type: 'switch',
+      },
+    ]
   },
   {
     id: 'analytics',
     name: 'Analítica',
     description: 'Visualice y entienda sus datos.',
     icon: BarChart,
-    products: []
+    products: [
+       {
+        id: 'analytics-dashboard',
+        name: 'Dashboard de Analítica',
+        description: 'Panel de control en tiempo real para monitorizar el rendimiento de sus bots.',
+        price: 600,
+        icon: BarChart,
+        type: 'switch',
+      }
+    ]
   },
   {
     id: 'support',
     name: 'Soporte',
     description: 'Planes de soporte técnico.',
     icon: Wrench,
-    products: []
+    products: [
+       {
+        id: 'support-plan',
+        name: 'Plan de Soporte',
+        description: 'Acceso prioritario a nuestro equipo de expertos para resolver cualquier incidencia.',
+        price: 300,
+        icon: Wrench,
+        type: 'select',
+        options: [
+            { id: 'soporte-basico', label: 'Básico (Email)', price: 300 },
+            { id: 'soporte-avanzado', label: 'Avanzado (Email y Chat)', price: 600 },
+            { id: 'soporte-premium', label: 'Premium (24/7 Dedicado)', price: 1500 },
+        ]
+      }
+    ]
   }
 ];
