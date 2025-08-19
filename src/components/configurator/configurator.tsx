@@ -13,7 +13,7 @@ type Step = 'customer' | 'products' | 'confirmation';
 export default function Configurator({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: { [key:string]: string | string[] | undefined };
 }) {
   const [step, setStep] = useState<Step>('customer');
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo | null>(null);
@@ -46,11 +46,11 @@ export default function Configurator({
 
   return (
     <div className="flex flex-col gap-8">
-      <header className="text-center">
+      <header className="text-center max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl md:text-6xl">
           Configurador de Soluciones de IA
         </h1>
-        <p className="mt-3 text-lg text-muted-foreground sm:mt-5 sm:text-xl">
+        <p className="mt-4 text-lg text-muted-foreground sm:text-xl">
           Construya su solución a medida en tres sencillos pasos.
         </p>
       </header>
@@ -72,7 +72,7 @@ export default function Configurator({
         </div>
       )}
 
-      <div className="relative mt-8">
+      <div className="relative mt-4">
         <AnimatePresence mode="wait">
           {step === 'customer' && (
             <motion.div

@@ -39,7 +39,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
   }, [emailFromQuery, form]);
 
   return (
-    <Card className="max-w-2xl mx-auto border-primary/20 shadow-lg shadow-primary/5">
+    <Card className="max-w-2xl mx-auto backdrop-blur-sm bg-card/80">
       <CardHeader>
         <CardTitle>Comencemos con sus datos</CardTitle>
         <CardDescription>
@@ -119,7 +119,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
                 control={form.control}
                 name="consent"
                 render={({ field }) => (
-                  <FormItem className="sm:col-span-2 flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm">
+                  <FormItem className="sm:col-span-2 flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-background/50">
                     <FormControl>
                       <Checkbox
                         checked={field.value}

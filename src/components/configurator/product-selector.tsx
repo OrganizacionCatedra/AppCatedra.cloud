@@ -79,14 +79,14 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: catIndex * 0.1 }}
           >
-            <Card className="overflow-hidden">
+            <Card className="overflow-hidden backdrop-blur-sm bg-card/80">
               <CardHeader className="bg-primary/5">
                 <CardTitle>{category.name}</CardTitle>
                 <CardDescription>{category.description}</CardDescription>
               </CardHeader>
               <CardContent className="p-4 md:p-6 space-y-4">
                 {category.products.map(product => (
-                  <div key={product.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 rounded-lg border hover:border-primary/50 transition-colors">
+                  <div key={product.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 rounded-lg border border-primary/10 hover:border-primary/50 transition-colors bg-background/50">
                     <div className="flex items-start gap-4 mb-4 sm:mb-0">
                       <product.icon className="w-8 h-8 text-primary mt-1 shrink-0" />
                       <div>
@@ -128,7 +128,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
         ))}
       </div>
 
-      <div className="lg:sticky top-12">
+      <div className="lg:sticky top-20">
         <Summary
           customerInfo={customerInfo}
           selectedProducts={selectedProductArray}

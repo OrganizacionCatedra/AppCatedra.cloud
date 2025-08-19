@@ -50,7 +50,7 @@ export default function Confirmation({ customerInfo, selectedProducts, totalCost
 
     if (status === 'success') {
         return (
-            <Card className="max-w-2xl mx-auto text-center py-8 border-green-500/20 shadow-lg shadow-green-500/5">
+            <Card className="max-w-2xl mx-auto text-center py-8 border-green-500/20 shadow-lg shadow-green-500/5 backdrop-blur-sm bg-card/80">
                 <CardHeader>
                     <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
                     <CardTitle className="mt-4 text-2xl">¡Gracias por su pedido!</CardTitle>
@@ -70,7 +70,7 @@ export default function Confirmation({ customerInfo, selectedProducts, totalCost
 
     return (
         <div className="max-w-2xl mx-auto">
-            <Card className="border-primary/20 shadow-lg shadow-primary/5">
+            <Card className="backdrop-blur-sm bg-card/80">
                 <CardHeader>
                     <CardTitle>Confirmar Pedido</CardTitle>
                     <CardDescription>
