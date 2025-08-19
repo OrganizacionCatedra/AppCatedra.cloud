@@ -14,7 +14,7 @@ interface SummaryProps {
 
 export default function Summary({ customerInfo, selectedProducts, totalCost, children }: SummaryProps) {
     const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('es-VE', { style: 'currency', currency: 'USD' }).format(amount);
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
     };
 
     return (
