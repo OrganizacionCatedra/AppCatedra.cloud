@@ -22,7 +22,7 @@ export default function PlanSelector({ onPlanSelect, onBack }: PlanSelectorProps
                 <p className="text-muted-foreground mt-2 text-lg">Soluciones diseñadas para el éxito, listas para empezar.</p>
             </div>
 
-            <div className="grid grid-cols-1 gap-8 items-stretch">
+            <div className="grid grid-cols-1 gap-8">
                 {plans.map((plan, index) => (
                     <motion.div
                         key={plan.id}
