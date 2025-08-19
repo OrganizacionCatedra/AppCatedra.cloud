@@ -16,13 +16,13 @@ interface PlanSelectorProps {
 
 export default function PlanSelector({ onPlanSelect, onBack }: PlanSelectorProps) {
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold">Nuestros Planes Recomendados</h2>
                 <p className="text-muted-foreground mt-2 text-lg">Soluciones diseñadas para el éxito, listas para empezar.</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            <div className="grid grid-cols-1 gap-8 items-stretch">
                 {plans.map((plan, index) => (
                     <motion.div
                         key={plan.id}

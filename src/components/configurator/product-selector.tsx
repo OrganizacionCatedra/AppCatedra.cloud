@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ShoppingCart, LayoutGrid, Wand2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 interface ProductSelectorProps {
   customerInfo: CustomerInfo;
@@ -20,7 +21,7 @@ interface ProductSelectorProps {
 
 export default function ProductSelector({ customerInfo, onSubmit, onBack }: ProductSelectorProps) {
   const [selectedProducts, setSelectedProducts] = useState<Record<string, SelectedProduct>>({});
-  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [activeCategory, setActiveCategory] = useState<string>(productCategories[0].id);
 
   useEffect(() => {
     const initialSelections: Record<string, SelectedProduct> = {};
@@ -70,85 +71,54 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
   };
 
   const selectedProductArray = useMemo(() => Object.values(selectedProducts), [selectedProducts]);
-
+  
   const filteredProducts = useMemo(() => {
-    if (activeCategory === 'all') {
-      return productCategories.flatMap(category =>
-        category.products.map(product => ({ ...product, category }))
-      );
-    }
-    return productCategories
-      .find(c => c.id === activeCategory)?.products
-      .map(product => ({ ...product, category: productCategories.find(c => c.id === activeCategory)! })) ?? [];
+    return productCategories.find(c => c.id === activeCategory)?.products ?? [];
   }, [activeCategory]);
-
-  const getCategoryById = (id: string) => productCategories.find(c => c.id === id);
-
+  
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-      <div className="lg:col-span-3 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Category Sidebar */}
-        <div className="lg:col-span-3">
-          <Card>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      <div className="lg:col-span-2">
+        <Card>
             <CardHeader>
-              <CardTitle>Categorías</CardTitle>
+                <div className="flex items-center gap-3">
+                    <Wand2 className="w-8 h-8 text-primary" />
+                    <div>
+                    <CardTitle>Diseña tu Plan a Medida</CardTitle>
+                    <CardDescription>Selecciona los módulos que necesitas. Los precios se suman a tu plan base.</CardDescription>
+                    </div>
+                </div>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col space-y-2">
-                <Button
-                  variant="ghost"
-                  onClick={() => setActiveCategory('all')}
-                  className={cn(
-                    "w-full justify-start text-foreground",
-                    activeCategory === 'all' && 'bg-accent text-accent-foreground'
-                  )}
-                >
-                  <LayoutGrid className="mr-2 h-4 w-4" />
-                  Todos
-                </Button>
-                {productCategories.map(category => (
-                  <Button
-                    key={category.id}
-                    variant="ghost"
-                    onClick={() => setActiveCategory(category.id)}
-                    className={cn(
-                      "w-full justify-start text-foreground",
-                       activeCategory === category.id && 'bg-accent text-accent-foreground'
-                    )}
-                  >
-                    <category.icon className="mr-2 h-4 w-4" />
-                    {category.name}
-                  </Button>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        
-        {/* Products Grid */}
-        <div className="lg:col-span-9">
-            <Card>
-                <CardHeader>
-                    <div className="flex items-center gap-3">
-                        <Wand2 className="w-8 h-8 text-primary" />
-                        <div>
-                        <CardTitle>Diseña tu Plan a Medida</CardTitle>
-                        <CardDescription>Selecciona los módulos que necesitas de la categoría activa.</CardDescription>
+                <div className="mb-6">
+                    <ScrollArea className="w-full whitespace-nowrap">
+                        <div className="flex space-x-2 pb-4">
+                        {productCategories.map(category => (
+                            <Button
+                                key={category.id}
+                                variant={activeCategory === category.id ? "default" : "outline"}
+                                onClick={() => setActiveCategory(category.id)}
+                                className="shrink-0"
+                            >
+                                <category.icon className="mr-2 h-4 w-4" />
+                                {category.name}
+                            </Button>
+                        ))}
                         </div>
-                    </div>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {filteredProducts.map((product, index) => {
-                        const categoryInfo = getCategoryById(product.category.id);
+                        const categoryInfo = productCategories.find(c => c.id === activeCategory);
                         return (
                         <motion.div
                             key={product.id}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, delay: index * 0.05 }}
-                            className="h-full"
                         >
                             <div className="p-4 rounded-xl border border-white/10 bg-black/30 h-full flex flex-col">
                             <div className="flex-grow">
@@ -171,14 +141,14 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                                     <Switch
                                     id={product.id}
                                     checked={!!selectedProducts[product.id]}
-                                    onCheckedChange={(checked) => handleSwitchChange(product, product.category, checked)}
+                                    onCheckedChange={(checked) => handleSwitchChange(product, categoryInfo!, checked)}
                                     />
                                 </>
                                 )}
                                 {product.type === 'select' && product.options && (
                                 <div className='w-full'>
                                     <Select
-                                    onValueChange={(optionId) => handleSelectChange(product, product.category, optionId)}
+                                    onValueChange={(optionId) => handleSelectChange(product, categoryInfo!, optionId)}
                                     value={selectedProducts[product.id]?.option?.id || product.options[0].id}
                                     >
                                     <SelectTrigger className="w-full bg-background border-white/20">
@@ -199,12 +169,10 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                         </motion.div>
                         )
                     })}
-                    </div>
-                 </CardContent>
-            </Card>
-        </div>
+                </div>
+            </CardContent>
+        </Card>
       </div>
-
       <div className="lg:col-span-1 lg:sticky top-20">
         <Summary
           customerInfo={customerInfo}
