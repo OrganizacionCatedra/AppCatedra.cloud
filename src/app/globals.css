@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 222.2 84% 4.9%;
+    --background: 240 10% 3.9%; /* Gris muy oscuro, #121212 */
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 240 10% 3.9%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 195 100% 50%; /* Cian/Azul Eléctrico */
+    --primary: 255 34% 51%; /* Morado oscuro, #624CAB */
     --primary-foreground: 210 40% 98%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 84 96% 59%; /* Verde Eléctrico */
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 90 100% 44%; /* Verde eléctrico, #7CFC00 */
+    --accent-foreground: 255 34% 51%; /* Morado oscuro para contraste */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 195 100% 50%; /* Cian/Azul Eléctrico para el anillo de foco */
+    --ring: 255 34% 51%;
     --radius: 0.8rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 240 10% 3.9%; /* Gris muy oscuro, #121212 */
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 240 10% 3.9%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 195 100% 50%; /* Cian/Azul Eléctrico */
+    --primary: 255 34% 51%; /* Morado oscuro, #624CAB */
     --primary-foreground: 210 40% 98%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 84 96% 59%; /* Verde Eléctrico */
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 90 100% 44%; /* Verde eléctrico, #7CFC00 */
+    --accent-foreground: 240 10% 3.9%; /* Gris oscuro para contraste */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 195 100% 50%; /* Cian/Azul Eléctrico para el anillo de foco */
+    --ring: 255 34% 51%;
   }
 }
 
@@ -59,12 +59,12 @@
 }
 
 .gradient-mesh {
-  background-color: #0A0A0A;
+  background-color: hsl(var(--background));
   background-image:
-    radial-gradient(at 15% 20%, hsla(200, 80%, 30%, 0.3) 0px, transparent 50%),
-    radial-gradient(at 85% 30%, hsla(195, 85%, 40%, 0.3) 0px, transparent 50%),
-    radial-gradient(at 20% 80%, hsla(210, 70%, 45%, 0.3) 0px, transparent 50%),
-    radial-gradient(at 75% 90%, hsla(190, 85%, 55%, 0.2) 0px, transparent 50%);
+    radial-gradient(at 15% 20%, hsla(255, 34%, 51%, 0.2) 0px, transparent 50%),
+    radial-gradient(at 85% 30%, hsla(90, 100%, 44%, 0.1) 0px, transparent 50%),
+    radial-gradient(at 20% 80%, hsla(255, 34%, 51%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 75% 90%, hsla(90, 100%, 44%, 0.15) 0px, transparent 50%);
 }
 
 .thumb-accent > div {
