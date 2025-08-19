@@ -26,11 +26,10 @@ export default function Configurator({
   };
   
   const handlePathSelect = (path: 'pre-made' | 'custom') => {
-    // For now, only the custom path is implemented.
     if (path === 'custom') {
       setStep('products');
     }
-    // TODO: Implement other paths
+    // TODO: Implementar la ruta 'pre-made'
   }
 
   const handleProductsSubmit = (products: SelectedProduct[], total: number) => {
