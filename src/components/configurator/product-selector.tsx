@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ShoppingCart, LayoutGrid } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 
 interface ProductSelectorProps {
@@ -101,33 +102,36 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
             </div>
           </CardHeader>
           <CardContent>
-            <div className="p-1.5 rounded-full bg-black/30 flex items-center gap-2 mb-6">
-              <Button
-                size="sm"
-                onClick={() => setActiveCategory('all')}
-                className={cn(
-                  "rounded-full flex-1 justify-center text-foreground font-medium transition-all duration-300",
-                  activeCategory === 'all' ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
-                )}
-              >
-                <LayoutGrid className="mr-2 h-4 w-4" />
-                Todos
-              </Button>
-              {productCategories.map(category => (
+            <ScrollArea className="w-full whitespace-nowrap rounded-lg">
+              <div className="flex w-max space-x-2 p-1.5 rounded-full bg-black/30 mb-6">
                 <Button
-                  key={category.id}
                   size="sm"
-                  onClick={() => setActiveCategory(category.id)}
+                  onClick={() => setActiveCategory('all')}
                   className={cn(
                     "rounded-full flex-1 justify-center text-foreground font-medium transition-all duration-300",
-                    activeCategory === category.id ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
+                    activeCategory === 'all' ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
                   )}
                 >
-                  <category.icon className="mr-2 h-4 w-4" />
-                  {category.name}
+                  <LayoutGrid className="mr-2 h-4 w-4" />
+                  Todos
                 </Button>
-              ))}
-            </div>
+                {productCategories.map(category => (
+                  <Button
+                    key={category.id}
+                    size="sm"
+                    onClick={() => setActiveCategory(category.id)}
+                    className={cn(
+                      "rounded-full flex-1 justify-center text-foreground font-medium transition-all duration-300",
+                      activeCategory === category.id ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
+                    )}
+                  >
+                    <category.icon className="mr-2 h-4 w-4" />
+                    {category.name}
+                  </Button>
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredProducts.map((product, index) => {
@@ -141,7 +145,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                     className="h-full"
                   >
                     <div className="p-4 rounded-xl border border-primary/20 bg-black/30 h-full flex flex-col">
-                      <div>
+                      <div className="flex-grow">
                         {categoryInfo && (
                            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-primary/20 text-primary mb-3">
                               <categoryInfo.icon className="w-4 h-4"/>
