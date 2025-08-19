@@ -7,8 +7,11 @@ import ProductSelector from './product-selector';
 import Confirmation from './confirmation';
 import type { CustomerInfo, SelectedProduct } from '@/lib/types';
 import PathSelector from './path-selector';
+import PlanSelector from './plan-selector';
+import { plans } from '@/lib/plans';
+import { productCategories } from '@/lib/products';
 
-type Step = 'customer' | 'path-selection' | 'products' | 'confirmation';
+type Step = 'customer' | 'path-selection' | 'products' | 'plans' | 'confirmation';
 
 export default function Configurator({
   searchParams,
@@ -29,7 +32,9 @@ export default function Configurator({
     if (path === 'custom') {
       setStep('products');
     }
-    // TODO: Implementar la ruta 'pre-made'
+    if (path === 'pre-made') {
+      setStep('plans');
+    }
   }
 
   const handleProductsSubmit = (products: SelectedProduct[], total: number) => {
@@ -37,9 +42,55 @@ export default function Configurator({
     setTotalCost(total);
     setStep('confirmation');
   };
+
+  const handlePlanSelect = (planId: string) => {
+    const selectedPlan = plans.find(p => p.id === planId);
+    if (!selectedPlan) return;
+
+    const productsInPlan: SelectedProduct[] = [];
+    
+    productCategories.forEach(category => {
+      category.products.forEach(product => {
+        if (selectedPlan.productIds.includes(product.id)) {
+          // Para productos tipo 'select', usamos la opción por defecto o la especificada
+          if (product.type === 'select' && product.options) {
+             const option = product.options[0]; // O una lógica más compleja si el plan especifica la opción
+             productsInPlan.push({
+               id: product.id,
+               name: product.name,
+               price: option.price,
+               option,
+               category: category.id,
+               icon: product.icon,
+             });
+          } else { // para productos tipo 'switch'
+            productsInPlan.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              category: category.id,
+              icon: product.icon,
+            });
+          }
+        }
+      });
+    });
+
+    // Pequeño ajuste en caso de que la suma de productos no coincida con el precio del plan
+    // En un caso real, el precio del plan sería la fuente de verdad.
+    const planTotalCost = selectedPlan.price;
+
+    setSelectedProducts(productsInPlan);
+    setTotalCost(planTotalCost);
+    setStep('confirmation');
+  };
   
   const handleBackToProducts = () => {
     setStep('products');
+  }
+
+  const handleBackToPlans = () => {
+    setStep('plans');
   }
   
   const handleBackToPathSelection = () => {
@@ -52,6 +103,18 @@ export default function Configurator({
     setTotalCost(0);
     setStep('customer');
   };
+
+  const getBackActionForConfirmation = () => {
+    // Si el último producto seleccionado viene de un plan, volver a planes
+    const lastProduct = selectedProducts[selectedProducts.length - 1];
+    if (lastProduct) {
+        const plan = plans.find(p => p.productIds.includes(lastProduct.id));
+        if (plan && selectedProducts.length > 1) { // Asumimos que un plan tiene > 1 producto
+            return handleBackToPlans;
+        }
+    }
+    return handleBackToProducts;
+  }
 
   return (
     <div className="flex flex-col gap-8">
@@ -94,6 +157,21 @@ export default function Configurator({
             </motion.div>
           )}
 
+          {step === 'plans' && customerInfo && (
+            <motion.div
+              key="plans"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <PlanSelector
+                onPlanSelect={handlePlanSelect}
+                onBack={handleBackToPathSelection}
+              />
+            </motion.div>
+          )}
+
           {step === 'products' && customerInfo && (
             <motion.div
               key="products"
@@ -122,7 +200,7 @@ export default function Configurator({
                   selectedProducts={selectedProducts}
                   totalCost={totalCost}
                   onRestart={handleRestart}
-                  onBack={handleBackToProducts}
+                  onBack={getBackActionForConfirmation()}
                 />
              </motion.div>
           )}
