@@ -1,6 +1,6 @@
 import type { z } from 'zod';
 import type { customerInfoSchema } from './schemas';
-import type { LucideProps } from 'lucide-react';
+import type { LucideProps, Icon as LucideIcon } from 'lucide-react';
 import type { ForwardRefExoticComponent, RefAttributes } from 'react';
 
 export interface ProductOption {
@@ -15,7 +15,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  icon?: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
+  icon?: LucideIcon;
   options?: ProductOption[];
   type: 'switch' | 'select';
 }
@@ -24,7 +24,7 @@ export interface ProductCategory {
   id: string;
   name: string;
   description: string;
-  icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
+  icon: LucideIcon;
   products: Product[];
 }
 
@@ -34,6 +34,7 @@ export interface SelectedProduct {
   price: number;
   option?: ProductOption;
   category: string;
+  icon?: LucideIcon;
 }
 
 export type CustomerInfo = z.infer<typeof customerInfoSchema>;

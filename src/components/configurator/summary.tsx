@@ -3,6 +3,7 @@ import { productCategories } from '@/lib/products';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Icon } from 'lucide-react';
 
 interface SummaryProps {
   customerInfo: CustomerInfo;
@@ -16,8 +17,6 @@ export default function Summary({ customerInfo, selectedProducts, totalCost, chi
         return new Intl.NumberFormat('es-VE', { style: 'currency', currency: 'USD' }).format(amount);
     };
 
-    const getCategoryById = (id: string) => productCategories.find(c => c.id === id);
-
     return (
         <Card>
             <CardHeader>
@@ -29,11 +28,11 @@ export default function Summary({ customerInfo, selectedProducts, totalCost, chi
                   {selectedProducts.length > 0 ? (
                       <div className="space-y-4">
                           {selectedProducts.map(product => {
-                              const category = getCategoryById(product.category);
+                              const ProductIcon = product.icon;
                               return (
                                 <div key={product.id} className="flex justify-between items-center text-sm">
                                     <div className="flex items-center gap-2">
-                                      {category && <category.icon className="w-4 h-4 text-muted-foreground" />}
+                                      {ProductIcon && <ProductIcon className="w-4 h-4 text-muted-foreground" />}
                                       <div>
                                           <p className="font-medium">{product.name}</p>
                                           {product.option && (

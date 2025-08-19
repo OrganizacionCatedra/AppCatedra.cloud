@@ -36,6 +36,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
             price: defaultOption.price, 
             option: defaultOption,
             category: category.id,
+            icon: product.icon,
           };
         }
       });
@@ -46,7 +47,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
   const handleSwitchChange = (product: Product, category: ProductCategory, checked: boolean) => {
     const newSelected = { ...selectedProducts };
     if (checked) {
-      newSelected[product.id] = { id: product.id, name: product.name, price: product.price, category: category.id };
+      newSelected[product.id] = { id: product.id, name: product.name, price: product.price, category: category.id, icon: product.icon };
     } else {
       delete newSelected[product.id];
     }
@@ -57,7 +58,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
     const option = product.options?.find(o => o.id === optionId);
     if (option) {
       const newSelected = { ...selectedProducts };
-      newSelected[product.id] = { id: product.id, name: product.name, price: option.price, option, category: category.id };
+      newSelected[product.id] = { id: product.id, name: product.name, price: option.price, option, category: category.id, icon: product.icon };
       setSelectedProducts(newSelected);
     }
   };

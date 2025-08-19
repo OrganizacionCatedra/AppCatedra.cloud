@@ -1,4 +1,4 @@
-import { Bot, Server, BrainCircuit, Rocket, Link, BarChart, Wrench, GitBranch, ShoppingCart } from 'lucide-react';
+import { Bot, Server, BrainCircuit, Rocket, Link, BarChart, Wrench, GitBranch, ShoppingCart, LayoutGrid } from 'lucide-react';
 import type { ProductCategory } from './types';
 
 export const productCategories: ProductCategory[] = [
