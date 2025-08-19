@@ -54,7 +54,11 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, hsla(210, 40%, 98%, 0.1), transparent),
+      linear-gradient(to right, hsl(220, 13%, 12%), hsl(220, 13%, 18%), hsl(220, 13%, 12%));
+    @apply text-foreground;
   }
 }
 
