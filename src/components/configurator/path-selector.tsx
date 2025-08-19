@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, ArrowRight, CalendarPlus, PackageSearch, Wand2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, PackageSearch, Wand2 } from "lucide-react";
 import type { CustomerInfo } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 
 interface PathSelectorProps {
     customerInfo: CustomerInfo;
-    onPathSelect: (path: 'pre-made' | 'custom' | 'call') => void;
+    onPathSelect: (path: 'pre-made' | 'custom') => void;
     onBack: () => void;
 }
 
@@ -25,12 +25,6 @@ const pathOptions = [
         title: 'Diseña tu Plan',
         description: 'Selecciona módulos específicos y crea una solución completamente a tu medida.',
     },
-    {
-        id: 'call',
-        icon: CalendarPlus,
-        title: 'Agenda una Cita',
-        description: 'Habla con nuestro equipo para personalizar tu experiencia y resolver tus dudas.',
-    }
 ] as const;
 
 export default function PathSelector({ customerInfo, onPathSelect, onBack }: PathSelectorProps) {
@@ -41,7 +35,7 @@ export default function PathSelector({ customerInfo, onPathSelect, onBack }: Pat
                 <p className="text-muted-foreground mt-2 text-lg">¿Cómo te gustaría continuar?</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {pathOptions.map((option, index) => (
                     <motion.div
                         key={option.id}

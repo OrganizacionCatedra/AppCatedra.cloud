@@ -25,7 +25,7 @@ export default function Configurator({
     setStep('path-selection');
   };
   
-  const handlePathSelect = (path: 'pre-made' | 'custom' | 'call') => {
+  const handlePathSelect = (path: 'pre-made' | 'custom') => {
     // For now, only the custom path is implemented.
     if (path === 'custom') {
       setStep('products');
