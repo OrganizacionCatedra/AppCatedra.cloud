@@ -11,8 +11,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ShoppingCart, LayoutGrid, Wand2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-
 
 interface ProductSelectorProps {
   customerInfo: CustomerInfo;
@@ -88,27 +86,22 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
 
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-      <div className="lg:col-span-2 space-y-8">
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <Wand2 className="w-8 h-8 text-primary" />
-              <div>
-                <CardTitle>Diseña tu Plan a Medida</CardTitle>
-                <CardDescription>Selecciona los módulos que necesitas. Los precios se suman a tu plan base.</CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="w-full whitespace-nowrap rounded-lg">
-              <div className="flex w-max space-x-2 p-1.5 rounded-full bg-black/30 mb-6">
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+      <div className="lg:col-span-3 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Category Sidebar */}
+        <div className="lg:col-span-3">
+          <Card>
+            <CardHeader>
+              <CardTitle>Categorías</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col space-y-2">
                 <Button
-                  size="sm"
+                  variant="ghost"
                   onClick={() => setActiveCategory('all')}
                   className={cn(
-                    "rounded-full flex-1 justify-center text-foreground font-medium transition-all duration-300",
-                    activeCategory === 'all' ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
+                    "w-full justify-start text-foreground",
+                    activeCategory === 'all' && 'bg-accent text-accent-foreground'
                   )}
                 >
                   <LayoutGrid className="mr-2 h-4 w-4" />
@@ -117,11 +110,11 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                 {productCategories.map(category => (
                   <Button
                     key={category.id}
-                    size="sm"
+                    variant="ghost"
                     onClick={() => setActiveCategory(category.id)}
                     className={cn(
-                      "rounded-full flex-1 justify-center text-foreground font-medium transition-all duration-300",
-                      activeCategory === category.id ? 'bg-gradient-to-r from-primary to-accent text-primary-foreground shadow-md' : 'bg-transparent hover:bg-white/10'
+                      "w-full justify-start text-foreground",
+                       activeCategory === category.id && 'bg-accent text-accent-foreground'
                     )}
                   >
                     <category.icon className="mr-2 h-4 w-4" />
@@ -129,75 +122,90 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                   </Button>
                 ))}
               </div>
-              <ScrollBar orientation="horizontal" className="thumb-accent" />
-            </ScrollArea>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredProducts.map((product, index) => {
-                const categoryInfo = getCategoryById(product.category.id);
-                return (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="h-full"
-                  >
-                    <div className="p-4 rounded-xl border border-white/10 bg-black/30 h-full flex flex-col">
-                      <div className="flex-grow">
-                        {categoryInfo && (
-                          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-primary/20 text-primary mb-3">
-                            <categoryInfo.icon className="w-4 h-4" />
-                            {categoryInfo.name}
-                          </div>
-                        )}
-                        <h3 className="text-lg font-semibold text-foreground">{product.name}</h3>
-                        <p className="text-sm text-muted-foreground mt-1 mb-4 h-10">{product.description}</p>
-                      </div>
-
-                      <div className="flex items-center justify-between gap-4 mt-auto pt-4">
-                        {product.type === 'switch' && (
-                          <>
-                            <span className="font-mono text-lg text-accent">
-                              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)}
-                            </span>
-                            <Switch
-                              id={product.id}
-                              checked={!!selectedProducts[product.id]}
-                              onCheckedChange={(checked) => handleSwitchChange(product, product.category, checked)}
-                            />
-                          </>
-                        )}
-                        {product.type === 'select' && product.options && (
-                          <div className='w-full'>
-                            <Select
-                              onValueChange={(optionId) => handleSelectChange(product, product.category, optionId)}
-                              value={selectedProducts[product.id]?.option?.id || product.options[0].id}
-                            >
-                              <SelectTrigger className="w-full bg-background border-white/20">
-                                <SelectValue placeholder="Seleccione una opción" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {product.options.map(option => (
-                                  <SelectItem key={option.id} value={option.id}>
-                                    {option.label} ({new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(option.price)})
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        )}
-                      </div>
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* Products Grid */}
+        <div className="lg:col-span-9">
+            <Card>
+                <CardHeader>
+                    <div className="flex items-center gap-3">
+                        <Wand2 className="w-8 h-8 text-primary" />
+                        <div>
+                        <CardTitle>Diseña tu Plan a Medida</CardTitle>
+                        <CardDescription>Selecciona los módulos que necesitas de la categoría activa.</CardDescription>
+                        </div>
                     </div>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </CardContent>
-        </Card>
+                </CardHeader>
+                <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {filteredProducts.map((product, index) => {
+                        const categoryInfo = getCategoryById(product.category.id);
+                        return (
+                        <motion.div
+                            key={product.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: index * 0.05 }}
+                            className="h-full"
+                        >
+                            <div className="p-4 rounded-xl border border-white/10 bg-black/30 h-full flex flex-col">
+                            <div className="flex-grow">
+                                {categoryInfo && (
+                                <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-primary/20 text-primary mb-3">
+                                    <categoryInfo.icon className="w-4 h-4" />
+                                    {categoryInfo.name}
+                                </div>
+                                )}
+                                <h3 className="text-lg font-semibold text-foreground">{product.name}</h3>
+                                <p className="text-sm text-muted-foreground mt-1 mb-4 h-10">{product.description}</p>
+                            </div>
+
+                            <div className="flex items-center justify-between gap-4 mt-auto pt-4">
+                                {product.type === 'switch' && (
+                                <>
+                                    <span className="font-mono text-lg text-accent">
+                                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)}
+                                    </span>
+                                    <Switch
+                                    id={product.id}
+                                    checked={!!selectedProducts[product.id]}
+                                    onCheckedChange={(checked) => handleSwitchChange(product, product.category, checked)}
+                                    />
+                                </>
+                                )}
+                                {product.type === 'select' && product.options && (
+                                <div className='w-full'>
+                                    <Select
+                                    onValueChange={(optionId) => handleSelectChange(product, product.category, optionId)}
+                                    value={selectedProducts[product.id]?.option?.id || product.options[0].id}
+                                    >
+                                    <SelectTrigger className="w-full bg-background border-white/20">
+                                        <SelectValue placeholder="Seleccione una opción" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {product.options.map(option => (
+                                        <SelectItem key={option.id} value={option.id}>
+                                            {option.label} ({new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(option.price)})
+                                        </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                    </Select>
+                                </div>
+                                )}
+                            </div>
+                            </div>
+                        </motion.div>
+                        )
+                    })}
+                    </div>
+                 </CardContent>
+            </Card>
+        </div>
       </div>
 
-      <div className="lg:sticky top-20">
+      <div className="lg:col-span-1 lg:sticky top-20">
         <Summary
           customerInfo={customerInfo}
           selectedProducts={selectedProductArray}
