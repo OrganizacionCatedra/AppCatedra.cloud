@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: 220 13% 18%; /* Gris oscuro aclarado */
-    --foreground: 210 40% 98%;
+    --background: 220 13% 18%;
+    --foreground: 0 0% 100%;
     --card: 240 10% 3.9%;
     --card-foreground: 210 40% 98%;
     --popover: 240 10% 3.9%;
@@ -27,8 +27,8 @@
   }
 
   .dark {
-    --background: 220 13% 18%; /* Gris oscuro aclarado */
-    --foreground: 210 40% 98%;
+    --background: 220 13% 18%;
+    --foreground: 0 0% 100%;
     --card: 240 10% 3.9%;
     --card-foreground: 210 40% 98%;
     --popover: 240 10% 3.9%;
