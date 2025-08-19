@@ -60,9 +60,17 @@
 
 .gradient-mesh {
   background-color: #0A0A0A;
-  background-image: 
-    radial-gradient(at 15% 20%, hsla(180, 75%, 45%, 0.4) 0px, transparent 50%),
-    radial-gradient(at 85% 30%, hsla(200, 80%, 50%, 0.3) 0px, transparent 50%),
-    radial-gradient(at 20% 80%, hsla(170, 70%, 40%, 0.4) 0px, transparent 50%),
-    radial-gradient(at 75% 90%, hsla(210, 85%, 55%, 0.3) 0px, transparent 50%);
+  background-image:
+    radial-gradient(at 15% 20%, hsla(200, 80%, 30%, 0.3) 0px, transparent 50%),
+    radial-gradient(at 85% 30%, hsla(195, 85%, 40%, 0.3) 0px, transparent 50%),
+    radial-gradient(at 20% 80%, hsla(210, 70%, 45%, 0.3) 0px, transparent 50%),
+    radial-gradient(at 75% 90%, hsla(190, 85%, 55%, 0.2) 0px, transparent 50%);
+}
+
+.thumb-accent > div {
+    background-color: hsl(var(--primary) / 0.6);
+}
+
+.thumb-accent:hover > div {
+    background-color: hsl(var(--primary) / 1);
 }

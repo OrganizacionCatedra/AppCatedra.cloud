@@ -6,7 +6,6 @@ import type { CustomerInfo, SelectedProduct, Product, ProductCategory } from '@/
 import Summary from './summary';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ShoppingCart, LayoutGrid } from 'lucide-react';
@@ -31,10 +30,10 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
       category.products.forEach(product => {
         if (product.type === 'select' && product.options && product.options.length > 0) {
           const defaultOption = product.options[0];
-          initialSelections[product.id] = { 
-            id: product.id, 
-            name: product.name, 
-            price: defaultOption.price, 
+          initialSelections[product.id] = {
+            id: product.id,
+            name: product.name,
+            price: defaultOption.price,
             option: defaultOption,
             category: category.id,
             icon: product.icon,
@@ -71,12 +70,12 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
   const handleSubmit = () => {
     onSubmit(Object.values(selectedProducts), totalCost);
   };
-  
+
   const selectedProductArray = useMemo(() => Object.values(selectedProducts), [selectedProducts]);
-  
+
   const filteredProducts = useMemo(() => {
     if (activeCategory === 'all') {
-      return productCategories.flatMap(category => 
+      return productCategories.flatMap(category =>
         category.products.map(product => ({ ...product, category }))
       );
     }
@@ -84,7 +83,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
       .find(c => c.id === activeCategory)?.products
       .map(product => ({ ...product, category: productCategories.find(c => c.id === activeCategory)! })) ?? [];
   }, [activeCategory]);
-  
+
   const getCategoryById = (id: string) => productCategories.find(c => c.id === id);
 
 
@@ -130,7 +129,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                   </Button>
                 ))}
               </div>
-              <ScrollBar orientation="horizontal" />
+              <ScrollBar orientation="horizontal" className="thumb-accent" />
             </ScrollArea>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -147,10 +146,10 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                     <div className="p-4 rounded-xl border border-primary/20 bg-black/30 h-full flex flex-col">
                       <div className="flex-grow">
                         {categoryInfo && (
-                           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-primary/20 text-primary mb-3">
-                              <categoryInfo.icon className="w-4 h-4"/>
-                              {categoryInfo.name}
-                           </div>
+                          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-primary/20 text-primary mb-3">
+                            <categoryInfo.icon className="w-4 h-4" />
+                            {categoryInfo.name}
+                          </div>
                         )}
                         <h3 className="text-lg font-semibold text-foreground">{product.name}</h3>
                         <p className="text-sm text-muted-foreground mt-1 mb-4 h-10">{product.description}</p>
@@ -158,33 +157,33 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
 
                       <div className="flex items-center justify-between gap-4 mt-auto pt-4">
                         {product.type === 'switch' && (
-                           <>
+                          <>
                             <span className="font-mono text-lg text-accent">
-                                {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)}
+                              {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)}
                             </span>
                             <Switch
-                                id={product.id}
-                                checked={!!selectedProducts[product.id]}
-                                onCheckedChange={(checked) => handleSwitchChange(product, product.category, checked)}
+                              id={product.id}
+                              checked={!!selectedProducts[product.id]}
+                              onCheckedChange={(checked) => handleSwitchChange(product, product.category, checked)}
                             />
-                           </>
+                          </>
                         )}
                         {product.type === 'select' && product.options && (
                           <div className='w-full'>
                             <Select
-                                onValueChange={(optionId) => handleSelectChange(product, product.category, optionId)}
-                                value={selectedProducts[product.id]?.option?.id || product.options[0].id}
+                              onValueChange={(optionId) => handleSelectChange(product, product.category, optionId)}
+                              value={selectedProducts[product.id]?.option?.id || product.options[0].id}
                             >
-                                <SelectTrigger className="w-full bg-background border-white/20">
-                                  <SelectValue placeholder="Seleccione una opción" />
-                                </SelectTrigger>
-                                <SelectContent>
+                              <SelectTrigger className="w-full bg-background border-white/20">
+                                <SelectValue placeholder="Seleccione una opción" />
+                              </SelectTrigger>
+                              <SelectContent>
                                 {product.options.map(option => (
-                                    <SelectItem key={option.id} value={option.id}>
-                                      {option.label} ({new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(option.price)})
-                                    </SelectItem>
+                                  <SelectItem key={option.id} value={option.id}>
+                                    {option.label} ({new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(option.price)})
+                                  </SelectItem>
                                 ))}
-                                </SelectContent>
+                              </SelectContent>
                             </Select>
                           </div>
                         )}
@@ -205,14 +204,14 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
           totalCost={totalCost}
         >
           <div className="flex flex-col gap-4 mt-6 w-full">
-             <Button onClick={handleSubmit} size="lg" disabled={totalCost === 0} className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20">
-               <ShoppingCart className="mr-2 h-5 w-5" />
-               Proceder a Confirmación
-             </Button>
-             <Button onClick={onBack} variant="outline">
+            <Button onClick={handleSubmit} size="lg" disabled={totalCost === 0} className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20">
+              <ShoppingCart className="mr-2 h-5 w-5" />
+              Proceder a Confirmación
+            </Button>
+            <Button onClick={onBack} variant="outline">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver
-             </Button>
+            </Button>
           </div>
         </Summary>
       </div>
