@@ -6,9 +6,9 @@ import CustomerForm from './customer-form';
 import ProductSelector from './product-selector';
 import Confirmation from './confirmation';
 import type { CustomerInfo, SelectedProduct } from '@/lib/types';
-import { Progress } from '@/components/ui/progress';
+import PathSelector from './path-selector';
 
-type Step = 'customer' | 'products' | 'confirmation';
+type Step = 'customer' | 'path-selection' | 'products' | 'confirmation';
 
 export default function Configurator({
   searchParams,
@@ -22,8 +22,16 @@ export default function Configurator({
 
   const handleCustomerSubmit = (data: CustomerInfo) => {
     setCustomerInfo(data);
-    setStep('products');
+    setStep('path-selection');
   };
+  
+  const handlePathSelect = (path: 'pre-made' | 'custom' | 'call') => {
+    // For now, only the custom path is implemented.
+    if (path === 'custom') {
+      setStep('products');
+    }
+    // TODO: Implement other paths
+  }
 
   const handleProductsSubmit = (products: SelectedProduct[], total: number) => {
     setSelectedProducts(products);
@@ -34,6 +42,10 @@ export default function Configurator({
   const handleBackToProducts = () => {
     setStep('products');
   }
+  
+  const handleBackToPathSelection = () => {
+    setStep('path-selection');
+  }
 
   const handleRestart = () => {
     setCustomerInfo(null);
@@ -41,8 +53,6 @@ export default function Configurator({
     setTotalCost(0);
     setStep('customer');
   };
-
-  const progressValue = step === 'customer' ? 10 : step === 'products' ? 50 : 100;
 
   return (
     <div className="flex flex-col gap-8">
@@ -54,24 +64,7 @@ export default function Configurator({
           Personaliza tu plan de IA ideal en minutos.
         </p>
       </header>
-
-      {step !== 'confirmation' && (
-        <div className="w-full max-w-2xl mx-auto">
-          <Progress value={progressValue} className="h-2" />
-          <ol className="grid grid-cols-3 mt-2 text-sm font-medium text-center text-muted-foreground">
-              <li className={`flex justify-start ${step === 'customer' ? 'text-foreground font-semibold' : ''}`}>
-                <span>1. Información</span>
-              </li>
-              <li className={`flex justify-center ${step === 'products' ? 'text-foreground font-semibold' : ''}`}>
-                <span>2. Productos</span>
-              </li>
-              <li className={`flex justify-end`}>
-                <span>3. Confirmación</span>
-              </li>
-          </ol>
-        </div>
-      )}
-
+      
       <div className="relative mt-4">
         <AnimatePresence mode="wait">
           {step === 'customer' && (
@@ -83,6 +76,22 @@ export default function Configurator({
               transition={{ duration: 0.3 }}
             >
               <CustomerForm onSubmit={handleCustomerSubmit} searchParams={searchParams} />
+            </motion.div>
+          )}
+          
+          {step === 'path-selection' && customerInfo && (
+            <motion.div
+              key="path-selection"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <PathSelector 
+                customerInfo={customerInfo}
+                onPathSelect={handlePathSelect}
+                onBack={() => setStep('customer')}
+              />
             </motion.div>
           )}
 
@@ -97,7 +106,7 @@ export default function Configurator({
               <ProductSelector
                 customerInfo={customerInfo}
                 onSubmit={handleProductsSubmit}
-                onBack={() => setStep('customer')}
+                onBack={handleBackToPathSelection}
               />
             </motion.div>
           )}

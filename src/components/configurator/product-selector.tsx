@@ -93,9 +93,9 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
         <Card>
           <CardHeader>
             <div className="flex items-center gap-3">
-              <ShoppingCart className="w-8 h-8 text-primary" />
+              <Wand2 className="w-8 h-8 text-primary" />
               <div>
-                <CardTitle>Catálogo de Productos</CardTitle>
+                <CardTitle>Diseña tu Plan a Medida</CardTitle>
                 <CardDescription>Selecciona los módulos que necesitas. Los precios se suman a tu plan base.</CardDescription>
               </div>
             </div>
