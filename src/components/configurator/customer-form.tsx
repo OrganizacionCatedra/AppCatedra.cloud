@@ -57,7 +57,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
                   <FormItem>
                     <FormLabel>Nombre completo</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ej: Juan Pérez" {...field} className="bg-white/50 dark:bg-black/20" />
+                      <Input placeholder="Ej: Juan Pérez" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -70,7 +70,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="ejemplo@empresa.com" {...field} className="bg-white/50 dark:bg-black/20" />
+                      <Input type="email" placeholder="ejemplo@empresa.com" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -83,7 +83,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
                   <FormItem>
                     <FormLabel>Teléfono</FormLabel>
                     <FormControl>
-                      <Input placeholder="+1 234 567 890" {...field} className="bg-white/50 dark:bg-black/20" />
+                      <Input placeholder="+1 234 567 890" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -96,7 +96,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
                   <FormItem>
                     <FormLabel>Empresa</FormLabel>
                     <FormControl>
-                      <Input placeholder="Nombre de su empresa" {...field} className="bg-white/50 dark:bg-black/20" />
+                      <Input placeholder="Nombre de su empresa" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -109,7 +109,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
                   <FormItem className="sm:col-span-2">
                     <FormLabel>País</FormLabel>
                     <FormControl>
-                      <Input placeholder="País de residencia" {...field} className="bg-white/50 dark:bg-black/20" />
+                      <Input placeholder="País de residencia" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -119,7 +119,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
                 control={form.control}
                 name="consent"
                 render={({ field }) => (
-                  <FormItem className="sm:col-span-2 flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-white/30 dark:bg-black/20">
+                  <FormItem className="sm:col-span-2 flex flex-row items-start space-x-3 space-y-0 rounded-md border border-white/10 p-4 bg-black/20">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
@@ -137,7 +137,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
               />
             </div>
             <div className="flex justify-end pt-4">
-              <Button type="submit" size="lg">
+              <Button type="submit" size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20">
                 Continuar
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

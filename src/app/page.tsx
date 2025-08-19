@@ -7,8 +7,7 @@ export default function Home({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   return (
-    <main className="relative min-h-screen w-full overflow-x-hidden bg-white dark:bg-black">
-       <div className="absolute inset-0 -z-10 h-full w-full bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:from-indigo-900/50 dark:via-purple-900/50 dark:to-pink-900/50" />
+    <main className="relative min-h-screen w-full overflow-x-hidden gradient-mesh">
        <div className="absolute top-4 right-4 z-20">
         <ThemeToggle />
        </div>
