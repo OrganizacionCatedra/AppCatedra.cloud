@@ -138,8 +138,9 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
+                    className="h-full"
                   >
-                    <div className="p-4 rounded-xl border border-primary/20 bg-black/30 h-full flex flex-col justify-between">
+                    <div className="p-4 rounded-xl border border-primary/20 bg-black/30 h-full flex flex-col">
                       <div>
                         {categoryInfo && (
                            <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-primary/20 text-primary mb-3">
@@ -151,7 +152,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                         <p className="text-sm text-muted-foreground mt-1 mb-4 h-10">{product.description}</p>
                       </div>
 
-                      <div className="flex items-center justify-between gap-4 mt-4">
+                      <div className="flex items-center justify-between gap-4 mt-auto pt-4">
                         {product.type === 'switch' && (
                            <>
                             <span className="font-mono text-lg text-accent">
@@ -171,12 +172,12 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                                 value={selectedProducts[product.id]?.option?.id || product.options[0].id}
                             >
                                 <SelectTrigger className="w-full bg-background border-white/20">
-                                <SelectValue placeholder="Seleccione una opción" />
+                                  <SelectValue placeholder="Seleccione una opción" />
                                 </SelectTrigger>
                                 <SelectContent>
                                 {product.options.map(option => (
                                     <SelectItem key={option.id} value={option.id}>
-                                    {option.label} ({new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(option.price)})
+                                      {option.label} ({new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(option.price)})
                                     </SelectItem>
                                 ))}
                                 </SelectContent>
