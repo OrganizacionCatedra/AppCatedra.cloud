@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const titleLines = [
   { text: "Crea la IA que", className: "text-foreground" },
-  { text: "Impulsa tu Negocio", className: "text-primary" },
+  { text: "Impulsa tu Negocio", className: "text-accent" },
 ];
 
 const sentence = {
