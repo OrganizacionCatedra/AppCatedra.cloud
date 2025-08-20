@@ -119,7 +119,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
                 control={form.control}
                 name="consent"
                 render={({ field }) => (
-                  <FormItem className="sm:col-span-2 flex flex-row items-start space-x-3 space-y-0 rounded-md border border-black/10 p-4 bg-black/5">
+                  <FormItem className="sm:col-span-2 flex flex-row items-start space-x-3 space-y-0 rounded-md border border-input p-4">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
@@ -137,7 +137,7 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
               />
             </div>
             <div className="flex justify-end pt-4">
-              <Button type="submit" size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20">
+              <Button type="submit" size="lg" style={{ backgroundColor: '#7CFC00', color: '#0F172A' }} className="shadow-lg shadow-lime-500/30 hover:bg-lime-400">
                 Continuar
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
