@@ -10,3 +10,18 @@ export const customerInfoSchema = z.object({
     message: 'Debe aceptar los términos y condiciones.',
   }),
 });
+
+// Esquema para un único mensaje
+export const chatMessageSchema = z.object({
+  role: z.enum(['user', 'model']),
+  content: z.string(),
+});
+
+// Esquema para la entrada del flow del asistente
+export const AssistantInputSchema = z.object({
+  history: z.array(chatMessageSchema).describe('El historial de la conversación actual.'),
+  context: z.object({
+    products: z.any().describe('Un objeto JSON con todos los productos disponibles, sus opciones y precios.'),
+    plans: z.any().describe('Un objeto JSON con todos los planes pre-diseñados.'),
+  }),
+});

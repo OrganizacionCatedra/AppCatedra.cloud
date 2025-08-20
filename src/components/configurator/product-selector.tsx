@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ShoppingCart, LayoutGrid, Wand2 } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, LayoutGrid, Wand2, Bot, Server, BrainCircuit, Rocket, Link, BarChart, Wrench, GitBranch, LucideProps } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
@@ -18,6 +18,20 @@ interface ProductSelectorProps {
   onSubmit: (products: SelectedProduct[], total: number) => void;
   onBack: () => void;
 }
+
+const iconMap: { [key: string]: React.FC<LucideProps> } = {
+  Bot,
+  Server,
+  BrainCircuit,
+  Rocket,
+  Link,
+  BarChart,
+  Wrench,
+  GitBranch,
+  ShoppingCart,
+  LayoutGrid
+};
+
 
 export default function ProductSelector({ customerInfo, onSubmit, onBack }: ProductSelectorProps) {
   const [selectedProducts, setSelectedProducts] = useState<Record<string, SelectedProduct>>({});
@@ -94,17 +108,20 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                 <div className="mb-6">
                     <ScrollArea className="w-full whitespace-nowrap">
                         <div className="flex space-x-2 pb-4">
-                        {productCategories.map(category => (
-                            <Button
-                                key={category.id}
-                                variant={activeCategory === category.id ? "default" : "outline"}
-                                onClick={() => setActiveCategory(category.id)}
-                                className="shrink-0"
-                            >
-                                <category.icon className="mr-2 h-4 w-4" />
-                                {category.name}
-                            </Button>
-                        ))}
+                        {productCategories.map(category => {
+                            const CategoryIcon = iconMap[category.icon];
+                            return (
+                                <Button
+                                    key={category.id}
+                                    variant={activeCategory === category.id ? "default" : "outline"}
+                                    onClick={() => setActiveCategory(category.id)}
+                                    className="shrink-0"
+                                >
+                                    {CategoryIcon && <CategoryIcon className="mr-2 h-4 w-4" />}
+                                    {category.name}
+                                </Button>
+                            )
+                        })}
                         </div>
                         <ScrollBar orientation="horizontal" />
                     </ScrollArea>
@@ -113,6 +130,8 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {filteredProducts.map((product, index) => {
                         const categoryInfo = productCategories.find(c => c.id === activeCategory);
+                        const CategoryIcon = categoryInfo ? iconMap[categoryInfo.icon] : null;
+
                         return (
                         <motion.div
                             key={product.id}
@@ -120,11 +139,11 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, delay: index * 0.05 }}
                         >
-                            <div className="p-4 rounded-xl border border-white/10 bg-white/30 dark:bg-black/30 h-full flex flex-col">
+                            <div className="p-4 rounded-xl border bg-white/30 dark:bg-black/30 h-full flex flex-col">
                             <div className="flex-grow">
-                                {categoryInfo && (
+                                {categoryInfo && CategoryIcon &&(
                                 <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-primary/20 text-primary mb-3">
-                                    <categoryInfo.icon className="w-4 h-4" />
+                                    <CategoryIcon className="w-4 h-4" />
                                     {categoryInfo.name}
                                 </div>
                                 )}

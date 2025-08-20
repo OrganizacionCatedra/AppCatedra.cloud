@@ -1,7 +1,9 @@
+'use server';
 import type { z } from 'zod';
-import type { customerInfoSchema } from './schemas';
+import type { customerInfoSchema, chatMessageSchema } from './schemas';
 import type { LucideProps, Icon as LucideIcon } from 'lucide-react';
 import type { ForwardRefExoticComponent, RefAttributes } from 'react';
+import { AssistantInputSchema } from './schemas';
 
 export interface ProductOption {
   id: string;
@@ -15,7 +17,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  icon?: LucideIcon;
+  icon?: string;
   options?: ProductOption[];
   type: 'switch' | 'select';
 }
@@ -24,7 +26,7 @@ export interface ProductCategory {
   id: string;
   name: string;
   description: string;
-  icon: LucideIcon;
+  icon: string;
   products: Product[];
 }
 
@@ -34,7 +36,9 @@ export interface SelectedProduct {
   price: number;
   option?: ProductOption;
   category: string;
-  icon?: LucideIcon;
+  icon?: string;
 }
 
 export type CustomerInfo = z.infer<typeof customerInfoSchema>;
+export type ChatMessage = z.infer<typeof chatMessageSchema>;
+export type AssistantInput = z.infer<typeof AssistantInputSchema>;

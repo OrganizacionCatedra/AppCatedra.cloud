@@ -3,7 +3,7 @@ import { productCategories } from '@/lib/products';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Icon } from 'lucide-react';
+import { Icon, LucideProps, Bot, Server, BrainCircuit, Rocket, Link, BarChart, Wrench, GitBranch, ShoppingCart, LayoutGrid } from 'lucide-react';
 
 interface SummaryProps {
   customerInfo: CustomerInfo;
@@ -11,6 +11,20 @@ interface SummaryProps {
   totalCost: number;
   children?: React.ReactNode;
 }
+
+const iconMap: { [key: string]: React.FC<LucideProps> } = {
+  Bot,
+  Server,
+  BrainCircuit,
+  Rocket,
+  Link,
+  BarChart,
+  Wrench,
+  GitBranch,
+  ShoppingCart,
+  LayoutGrid
+};
+
 
 export default function Summary({ customerInfo, selectedProducts, totalCost, children }: SummaryProps) {
     const formatCurrency = (amount: number) => {
@@ -28,7 +42,7 @@ export default function Summary({ customerInfo, selectedProducts, totalCost, chi
                   {selectedProducts.length > 0 ? (
                       <div className="space-y-4">
                           {selectedProducts.map(product => {
-                              const ProductIcon = product.icon;
+                              const ProductIcon = product.icon ? iconMap[product.icon] : null;
                               return (
                                 <div key={product.id} className="flex justify-between items-center text-sm">
                                     <div className="flex items-center gap-2">
