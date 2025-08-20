@@ -38,7 +38,7 @@ const letter = {
 
 export default function AnimatedTitle() {
   return (
-    <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+    <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
       {titleLines.map((line, lineIndex) => (
         <motion.span
           className="block"

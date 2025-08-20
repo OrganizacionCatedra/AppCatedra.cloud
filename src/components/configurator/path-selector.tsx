@@ -31,7 +31,7 @@ export default function PathSelector({ customerInfo, onPathSelect, onBack }: Pat
     return (
         <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold">¡Hola, {customerInfo.name.split(' ')[0]}!</h2>
+                <h2 className="font-headline text-3xl font-bold">¡Hola, {customerInfo.name.split(' ')[0]}!</h2>
                 <p className="text-muted-foreground mt-2 text-lg">¿Cómo te gustaría continuar?</p>
             </div>
             

@@ -128,7 +128,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                                     {categoryInfo.name}
                                 </div>
                                 )}
-                                <h3 className="text-lg font-semibold text-foreground">{product.name}</h3>
+                                <h3 className="text-lg font-headline font-semibold text-foreground">{product.name}</h3>
                                 <p className="text-sm text-muted-foreground mt-1 mb-4 h-10">{product.description}</p>
                             </div>
 

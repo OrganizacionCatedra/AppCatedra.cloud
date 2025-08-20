@@ -18,7 +18,7 @@ export default function PlanSelector({ onPlanSelect, onBack }: PlanSelectorProps
     return (
         <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold">Nuestros Planes Recomendados</h2>
+                <h2 className="font-headline text-3xl font-bold">Nuestros Planes Recomendados</h2>
                 <p className="text-muted-foreground mt-2 text-lg">Soluciones diseñadas para el éxito, listas para empezar.</p>
             </div>
 
@@ -43,12 +43,12 @@ export default function PlanSelector({ onPlanSelect, onBack }: PlanSelectorProps
                             )}
 
                             <CardHeader className="text-center pt-10">
-                                <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                                <CardTitle>{plan.name}</CardTitle>
                                 <CardDescription className="h-10">{plan.description}</CardDescription>
                             </CardHeader>
                             <CardContent className="flex-grow flex flex-col justify-between">
                                 <div className='text-center mb-8'>
-                                    <span className="text-4xl font-bold">${plan.price}</span>
+                                    <span className="font-headline text-4xl font-bold">${plan.price}</span>
                                     <span className="text-muted-foreground">/mes</span>
                                 </div>
                                 <ul className="space-y-3 text-sm">
