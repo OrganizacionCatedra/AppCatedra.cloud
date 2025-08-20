@@ -12,47 +12,58 @@ export async function processOrder(payload: OrderPayload) {
   console.log('Processing order...', payload);
   
   // Simulating network delay
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 1500));
   
-  // Here you would implement the real logic:
-  
-  // 1. Payment Integration (e.g., Stripe)
-  // const paymentIntent = await stripe.paymentIntents.create({
-  //   amount: payload.totalCost * 100, // Amount in cents
-  //   currency: 'usd',
-  //   customer: ... // create or retrieve customer
-  // });
-  // If payment fails, return { success: false, error: 'Payment failed' }
-  const paymentSuccessful = Math.random() > 0.1; // 90% success rate for simulation
+  // 1. Payment Integration Simulation
+  const paymentSuccessful = Math.random() > 0.1; // 90% success rate
   
   if (!paymentSuccessful) {
     console.error('Simulated payment failure.');
     return { success: false, error: 'La simulación del pago ha fallado. Por favor, intente de nuevo.' };
   }
 
-  // 2. Invoice Generation (e.g., using a PDF library)
-  // const invoiceUrl = await generatePdfInvoice(payload);
+  // 2. n8n Webhook Notification
+  const webhookUrl = process.env.N8N_WEBHOOK_URL;
+  
+  if (webhookUrl) {
+    try {
+      const webhookPayload = {
+        order_id: `ORD-${Date.now()}`,
+        customer_name: payload.customerInfo.name,
+        customer_email: payload.customerInfo.email,
+        company: payload.customerInfo.company,
+        total_amount: payload.totalCost,
+        products: payload.selectedProducts.map(p => ({
+            name: p.name,
+            option: p.option?.label,
+            price: p.price,
+        })),
+      };
+
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(webhookPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Webhook failed with status: ${response.status}`);
+      }
+      console.log('Webhook sent successfully to n8n.');
+
+    } catch (error) {
+      console.error('Error sending webhook to n8n:', error);
+      // You could decide to still return success to the user and handle the webhook failure separately
+      // For now, we'll let it pass but log the error.
+    }
+  } else {
+    console.warn('N8N_WEBHOOK_URL is not set. Skipping webhook notification.');
+  }
+  
+  // 3. Simulating other processes
   const invoiceUrl = `https://example.com/invoices/INV-${Date.now()}.pdf`;
   console.log(`Generated invoice: ${invoiceUrl}`);
-  
-  // 3. Data Persistence (e.g., PostgreSQL)
-  // await db.insert(orders).values({ ...payload, invoiceUrl, status: 'paid' });
   console.log('Order persisted to database.');
-  
-  // 4. Webhook Notification
-  // const webhookPayload = {
-  //   order_id: `ORD-${Date.now()}`,
-  //   customer_name: payload.customerInfo.name,
-  //   customer_email: payload.customerInfo.email,
-  //   total_amount: payload.totalCost,
-  //   invoice_pdf_url: invoiceUrl,
-  // };
-  // await fetch(process.env.BOT_WEBHOOK_URL, {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(webhookPayload),
-  // });
-  console.log('Webhook sent.');
   
   return { success: true, invoiceUrl };
 }
