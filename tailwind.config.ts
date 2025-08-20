@@ -9,9 +9,6 @@ export default {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'card-gradient': 'radial-gradient(circle at 20% 20%, hsl(var(--primary) / 0.1), transparent 40%), radial-gradient(circle at 80% 90%, hsl(var(--accent) / 0.1), transparent 40%)',
-      },
       fontFamily: {
         sans: ['var(--font-sans)', 'sans-serif'],
         body: ['var(--font-sans)', 'sans-serif'],
