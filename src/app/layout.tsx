@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Inter } from 'next/font/google';
+import BackgroundPlexus from '@/components/configurator/background-plexus';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -19,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang="es" className="dark">
       <body className={`${inter.variable} font-sans antialiased`}>
-        {children}
+        <BackgroundPlexus />
+        <main className="relative z-10">
+            {children}
+        </main>
         <Toaster />
       </body>
     </html>

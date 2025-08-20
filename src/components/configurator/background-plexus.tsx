@@ -2,24 +2,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { type Container, type ISourceOptions } from '@tsparticles/engine';
-// import { loadAll } from "@/tsparticles/all"; // if you are going to use `loadAll`, install the "@tsparticles/all" package too.
-// import { loadFull } from "tsparticles"; // if you are going to use `loadFull`, install the "tsparticles" package too.
-import { loadSlim } from '@tsparticles/slim'; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
-// import { loadBasic } from "@tsparticles/basic"; // if you are going to use `loadBasic`, install the "@tsparticles/basic" package too.
+import { loadSlim } from '@tsparticles/slim'; 
 
 export default function BackgroundPlexus() {
   const [init, setInit] = useState(false);
 
-  // this should be run only once per application lifetime
   useEffect(() => {
     initParticlesEngine(async (engine) => {
-      // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
-      // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-      // starting from v2 you can add only the features you need reducing the bundle size
-      //await loadAll(engine);
-      //await loadFull(engine);
       await loadSlim(engine);
-      //await loadBasic(engine);
     }).then(() => {
       setInit(true);
     });
@@ -50,13 +40,14 @@ export default function BackgroundPlexus() {
             distance: 140,
             links: {
               opacity: 1,
+              color: '#624CAB'
             },
           },
         },
       },
       particles: {
         color: {
-          value: '#624CAB', // Morado primario
+          value: '#ffffff',
         },
         links: {
           color: '#ffffff',
@@ -102,7 +93,7 @@ export default function BackgroundPlexus() {
         id="tsparticles"
         particlesLoaded={particlesLoaded}
         options={options}
-        className="absolute inset-0 z-0"
+        className="fixed inset-0 z-0"
       />
     );
   }
