@@ -23,7 +23,7 @@ export default function BackgroundPlexus() {
     () => ({
       background: {
         color: {
-          value: 'hsl(222 47% 11%)',
+          value: 'hsl(215 48% 11%)',
         },
       },
       fpsLimit: 60,
@@ -40,20 +40,20 @@ export default function BackgroundPlexus() {
             distance: 140,
             links: {
               opacity: 1,
-              color: '#624CAB'
+              color: '#7C3AED'
             },
           },
         },
       },
       particles: {
         color: {
-          value: '#ffffff',
+          value: '#E2E8F0',
         },
         links: {
-          color: '#ffffff',
+          color: '#7C3AED',
           distance: 150,
           enable: true,
-          opacity: 0.1,
+          opacity: 0.2,
           width: 1,
         },
         move: {
@@ -73,7 +73,12 @@ export default function BackgroundPlexus() {
           value: 80,
         },
         opacity: {
-          value: 0.5,
+          value: { min: 0.1, max: 0.5},
+          animation: {
+            enable: true,
+            speed: 1,
+            sync: false
+          }
         },
         shape: {
           type: 'circle',
