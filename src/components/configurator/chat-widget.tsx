@@ -10,7 +10,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { askAssistant } from '@/ai/flows/assistant-flow';
 import { askAssistantVoice } from '@/ai/flows/voice-assistant-flow';
-import type { ChatMessage, VoiceChatMessage } from '@/lib/types';
+import type { VoiceChatMessage } from '@/lib/types';
 import { Mic, MicOff } from 'lucide-react';
 
 
@@ -124,19 +124,19 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
   const handleSendAudio = async (audioDataUri: string) => {
     setIsLoading(true);
     // Optimistically add a placeholder for the user's spoken message
-    const userMessage: VoiceChatMessage = { role: 'user', content: "..." };
-    const newMessages = [...messages, userMessage];
+    const userMessagePlaceholder: VoiceChatMessage = { role: 'user', content: "..." };
+    const newMessages = [...messages, userMessagePlaceholder];
     setMessages(newMessages);
     scrollToBottom();
 
     try {
       const { text, audio } = await askAssistantVoice(audioDataUri);
       
-      // Update the user message with the transcribed text and add the model response
+      // Replace placeholder with actual transcribed text and add model response
       const updatedUserMessage: VoiceChatMessage = { role: 'user', content: text.userInput };
       const modelMessage: VoiceChatMessage = { role: 'model', content: text.modelResponse, audio: audio };
       
-      setMessages([...messages, updatedUserMessage, modelMessage]);
+      setMessages(prev => [...prev.slice(0, -1), updatedUserMessage, modelMessage]);
 
       if (audio) {
         const audioPlayer = new Audio(audio);
@@ -148,7 +148,8 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
         role: 'model',
         content: 'Lo siento, he tenido un problema para procesar tu audio. Por favor, inténtalo de nuevo.',
       };
-      setMessages([...messages, errorMessage]); // Revert to messages before optimistic update
+      // Replace placeholder with an error message
+      setMessages(prev => [...prev.slice(0, -1), errorMessage]); 
       console.error('Error calling voice assistant flow:', error);
     } finally {
       setIsLoading(false);
@@ -217,7 +218,7 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
                         </div>
                       </div>
                     ))}
-                    {isLoading && (
+                    {isLoading && messages[messages.length - 1]?.role !== 'user' && (
                        <div className="flex items-start gap-3">
                          <Avatar className="w-8 h-8">
                             <AvatarFallback className="bg-primary text-primary-foreground">IA</AvatarFallback>
@@ -246,8 +247,9 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
                         handleSendText();
                       }
                     }}
+                    disabled={isRecording || isLoading}
                   />
-                  <Button size="icon" onClick={handleSendText} disabled={isLoading || !input.trim()}>
+                  <Button size="icon" onClick={handleSendText} disabled={isLoading || isRecording || !input.trim()}>
                     <PaperPlaneIcon className="w-5 h-5" />
                   </Button>
                   <Button 
