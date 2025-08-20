@@ -35,7 +35,10 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(() => setHasPermission(true))
-      .catch(() => setHasPermission(false));
+      .catch(() => {
+        setHasPermission(false);
+        console.error("Permission to access microphone was denied.");
+      });
   }, []);
 
   const scrollToBottom = () => {
@@ -75,32 +78,33 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
   };
 
   const startRecording = async () => {
-    if (!hasPermission || isRecording) return;
+    if (!hasPermission) {
+        console.error("Cannot record without microphone permission.");
+        return;
+    }
     
+    setIsRecording(true);
+    audioChunksRef.current = [];
+
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorderRef.current = new MediaRecorder(stream);
-        audioChunksRef.current = [];
         
         mediaRecorderRef.current.ondataavailable = (event) => {
             audioChunksRef.current.push(event.data);
         };
 
-        mediaRecorderRef.current.onstop = async () => {
+        mediaRecorderRef.current.onstop = () => {
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-            const reader = new FileReader();
-            reader.readAsDataURL(audioBlob);
-            reader.onloadend = async () => {
-                const base64Audio = reader.result as string;
-                handleSendAudio(base64Audio);
-            };
+            handleSendAudio(audioBlob);
+            // Stop all media tracks to turn off the microphone indicator
+            stream.getTracks().forEach(track => track.stop());
         };
 
         mediaRecorderRef.current.start();
-        setIsRecording(true);
     } catch (error) {
         console.error("Error starting recording:", error);
-        // Handle no permission error more gracefully
+        setIsRecording(false);
     }
   };
 
@@ -108,8 +112,6 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-      // Stop all media tracks to turn off the microphone indicator
-      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
     }
   };
   
@@ -121,15 +123,30 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
       }
   }
 
-  const handleSendAudio = async (audioDataUri: string) => {
+  const blobToDataUri = (blob: Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            if (typeof reader.result === 'string') {
+                resolve(reader.result);
+            } else {
+                reject('Failed to convert blob to Data URI');
+            }
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+  }
+  
+  const handleSendAudio = async (audioBlob: Blob) => {
     setIsLoading(true);
     // Optimistically add a placeholder for the user's spoken message
     const userMessagePlaceholder: VoiceChatMessage = { role: 'user', content: "..." };
-    const newMessages = [...messages, userMessagePlaceholder];
-    setMessages(newMessages);
+    setMessages(prev => [...prev, userMessagePlaceholder]);
     scrollToBottom();
 
     try {
+      const audioDataUri = await blobToDataUri(audioBlob);
       const { text, audio } = await askAssistantVoice(audioDataUri);
       
       // Replace placeholder with actual transcribed text and add model response
@@ -156,6 +173,7 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
       scrollToBottom();
     }
   }
+
 
   return (
     <>
@@ -218,7 +236,7 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
                         </div>
                       </div>
                     ))}
-                    {isLoading && messages[messages.length - 1]?.role !== 'user' && (
+                    {isLoading && (
                        <div className="flex items-start gap-3">
                          <Avatar className="w-8 h-8">
                             <AvatarFallback className="bg-primary text-primary-foreground">IA</AvatarFallback>
