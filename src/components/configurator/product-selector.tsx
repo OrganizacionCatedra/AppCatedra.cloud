@@ -120,7 +120,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, delay: index * 0.05 }}
                         >
-                            <div className="p-4 rounded-xl border border-white/10 bg-black/30 h-full flex flex-col">
+                            <div className="p-4 rounded-xl border border-white/10 bg-white/30 dark:bg-black/30 h-full flex flex-col">
                             <div className="flex-grow">
                                 {categoryInfo && (
                                 <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-primary/20 text-primary mb-3">
