@@ -11,6 +11,7 @@ import PlanSelector from './plan-selector';
 import { plans } from '@/lib/plans';
 import { productCategories } from '@/lib/products';
 import { Rocket } from 'lucide-react';
+import AnimatedTitle from './animated-title';
 
 type Step = 'customer' | 'path-selection' | 'products' | 'plans' | 'confirmation';
 
@@ -117,16 +118,26 @@ export default function Configurator({
   return (
     <div className="flex flex-col gap-8">
       <header className="text-center max-w-3xl mx-auto flex flex-col items-center">
-        <div className="p-3 bg-primary/10 rounded-full mb-4 border border-primary/20">
-            <Rocket className="w-10 h-10 text-primary" />
-        </div>
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-          <span className="text-foreground">Crea la IA que</span><br/>
-          <span className="text-accent">Impulsa tu Negocio</span>
-        </h1>
-        <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, y: -20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <div className="p-3 bg-primary/10 rounded-full mb-4 border border-primary/20 shadow-lg shadow-primary/20">
+              <Rocket className="w-10 h-10 text-primary" />
+          </div>
+        </motion.div>
+        
+        <AnimatedTitle />
+
+        <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1.5 }}
+            className="mt-6 text-lg text-muted-foreground sm:text-xl"
+        >
           Tu solución de inteligencia artificial, diseñada por ti en minutos.
-        </p>
+        </motion.p>
       </header>
       
       <div className="relative mt-4">
