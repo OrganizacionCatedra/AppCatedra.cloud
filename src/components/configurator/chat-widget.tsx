@@ -104,7 +104,8 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
 
         mediaRecorderRef.current.onstop = () => {
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-            handleSendAudio(audioBlob);
+            // For now, we just trigger the test send.
+            handleSendAudioTest(); 
             stream.getTracks().forEach(track => track.stop());
         };
 
@@ -128,6 +129,54 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
       } else {
           startRecording();
       }
+  }
+
+  // Temporary test function
+  const handleSendAudioTest = async () => {
+    const webhookUrl = process.env.NEXT_PUBLIC_N8N_VOICE_WEBHOOK_URL;
+    if (!webhookUrl) {
+      console.error("N8N_VOICE_WEBHOOK_URL is not set.");
+      alert("La URL del webhook de voz no está configurada.");
+      return;
+    }
+
+    // Add a message to the chat to show we're testing
+    const testMessage: ChatMessage = { role: 'user', content: "Enviando prueba a n8n..." };
+    setMessages(prev => [...prev, testMessage]);
+    setIsLoading(true);
+    scrollToBottom();
+
+    try {
+      const testPayload = {
+        message: "Esto es una prueba desde la aplicación",
+        timestamp: new Date().toISOString(),
+        user: "Test User"
+      };
+
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(testPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`El webhook de prueba falló con estado ${response.status}`);
+      }
+      
+      const result = await response.json();
+      console.log("Respuesta de n8n:", result);
+
+      const successMessage: ChatMessage = { role: 'model', content: "¡Prueba recibida por n8n! Revisa la consola de tu workflow." };
+      setMessages(prev => [...prev.slice(0, -1), testMessage, successMessage]);
+
+    } catch (error) {
+      console.error('Error sending test webhook:', error);
+      const errorMessage: ChatMessage = { role: 'model', content: "Error al enviar la prueba. Revisa la consola del navegador y de n8n." };
+      setMessages(prev => [...prev.slice(0, -1), testMessage, errorMessage]);
+    } finally {
+      setIsLoading(false);
+      scrollToBottom();
+    }
   }
   
   const handleSendAudio = async (audioBlob: Blob) => {
