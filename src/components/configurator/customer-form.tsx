@@ -41,8 +41,8 @@ export default function CustomerForm({ onSubmit, searchParams }: CustomerFormPro
   return (
     <Card className="max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Comencemos con sus datos</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-center">Comencemos con sus datos</CardTitle>
+        <CardDescription className="text-center">
           Necesitamos esta información para preparar su cotización y ponernos en contacto.
         </CardDescription>
       </CardHeader>
