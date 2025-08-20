@@ -61,6 +61,7 @@ export async function processOrder(payload: OrderPayload) {
   }
   
   // 3. Simulating other processes
+  // In a real scenario, the invoice URL would come from the n8n response or a subsequent step
   const invoiceUrl = `https://example.com/invoices/INV-${Date.now()}.pdf`;
   console.log(`Generated invoice: ${invoiceUrl}`);
   console.log('Order persisted to database.');
