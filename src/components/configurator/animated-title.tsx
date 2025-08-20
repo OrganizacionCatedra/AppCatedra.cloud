@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 
 const titleLines = [
-  { text: "Crea la IA que", className: "text-white" },
+  { text: "Crea la IA que", className: "text-foreground" },
   { text: "Impulsa tu Negocio", className: "text-primary" },
 ];
 
