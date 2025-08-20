@@ -23,7 +23,7 @@ export default function BackgroundPlexus() {
     () => ({
       background: {
         color: {
-          value: 'hsl(215 48% 11%)',
+          value: 'hsl(210 40% 98%)',
         },
       },
       fpsLimit: 60,
@@ -40,14 +40,14 @@ export default function BackgroundPlexus() {
             distance: 140,
             links: {
               opacity: 1,
-              color: '#7C3AED'
+              color: '#0F172A'
             },
           },
         },
       },
       particles: {
         color: {
-          value: '#E2E8F0',
+          value: '#0F172A',
         },
         links: {
           color: '#7C3AED',
@@ -73,7 +73,7 @@ export default function BackgroundPlexus() {
           value: 80,
         },
         opacity: {
-          value: { min: 0.1, max: 0.5},
+          value: { min: 0.3, max: 0.8},
           animation: {
             enable: true,
             speed: 1,
