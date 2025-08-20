@@ -10,6 +10,7 @@ import PathSelector from './path-selector';
 import PlanSelector from './plan-selector';
 import { plans } from '@/lib/plans';
 import { productCategories } from '@/lib/products';
+import { Rocket } from 'lucide-react';
 
 type Step = 'customer' | 'path-selection' | 'products' | 'plans' | 'confirmation';
 
@@ -76,8 +77,6 @@ export default function Configurator({
       });
     });
 
-    // Pequeño ajuste en caso de que la suma de productos no coincida con el precio del plan
-    // En un caso real, el precio del plan sería la fuente de verdad.
     const planTotalCost = selectedPlan.price;
 
     setSelectedProducts(productsInPlan);
@@ -105,11 +104,10 @@ export default function Configurator({
   };
 
   const getBackActionForConfirmation = () => {
-    // Si el último producto seleccionado viene de un plan, volver a planes
     const lastProduct = selectedProducts[selectedProducts.length - 1];
     if (lastProduct) {
         const plan = plans.find(p => p.productIds.includes(lastProduct.id));
-        if (plan && selectedProducts.length > 1) { // Asumimos que un plan tiene > 1 producto
+        if (plan && selectedProducts.length > 1) { 
             return handleBackToPlans;
         }
     }
@@ -118,12 +116,16 @@ export default function Configurator({
 
   return (
     <div className="flex flex-col gap-8">
-      <header className="text-center max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">
-          Configura tu Solución a Medida
+      <header className="text-center max-w-3xl mx-auto flex flex-col items-center">
+        <div className="p-3 bg-primary/10 rounded-full mb-4 border border-primary/20">
+            <Rocket className="w-10 h-10 text-primary" />
+        </div>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+          <span className="text-foreground">Crea la IA que</span><br/>
+          <span className="text-accent">Impulsa tu Negocio</span>
         </h1>
-        <p className="mt-4 text-lg text-muted-foreground sm:text-xl">
-          Personaliza tu plan de IA ideal en minutos.
+        <p className="mt-6 text-lg text-muted-foreground sm:text-xl">
+          Tu solución de inteligencia artificial, diseñada por ti en minutos.
         </p>
       </header>
       
