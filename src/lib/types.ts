@@ -1,6 +1,6 @@
 'use server';
 import type { z } from 'zod';
-import type { customerInfoSchema, chatMessageSchema } from './schemas';
+import type { customerInfoSchema, chatMessageSchema, voiceChatMessageSchema } from './schemas';
 import type { LucideProps, Icon as LucideIcon } from 'lucide-react';
 import type { ForwardRefExoticComponent, RefAttributes } from 'react';
 import { AssistantInputSchema } from './schemas';
@@ -41,4 +41,5 @@ export interface SelectedProduct {
 
 export type CustomerInfo = z.infer<typeof customerInfoSchema>;
 export type ChatMessage = z.infer<typeof chatMessageSchema>;
+export type VoiceChatMessage = z.infer<typeof voiceChatMessageSchema>;
 export type AssistantInput = z.infer<typeof AssistantInputSchema>;

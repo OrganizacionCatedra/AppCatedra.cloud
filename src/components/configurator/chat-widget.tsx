@@ -9,7 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { askAssistant } from '@/ai/flows/assistant-flow';
-import type { ChatMessage } from '@/lib/types';
+import { askAssistantVoice } from '@/ai/flows/voice-assistant-flow';
+import type { ChatMessage, VoiceChatMessage } from '@/lib/types';
+import { Mic, MicOff } from 'lucide-react';
+
 
 interface ChatWidgetProps {
   productContext: any;
@@ -18,10 +21,22 @@ interface ChatWidgetProps {
 
 export default function ChatWidget({ productContext, planContext }: ChatWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<VoiceChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  
+  // Voice state
+  const [isRecording, setIsRecording] = useState(false);
+  const [hasPermission, setHasPermission] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(() => setHasPermission(true))
+      .catch(() => setHasPermission(false));
+  }, []);
 
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -32,10 +47,10 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
     }, 100);
   };
 
-  const handleSend = async () => {
+  const handleSendText = async () => {
     if (input.trim() === '' || isLoading) return;
 
-    const userMessage: ChatMessage = { role: 'user', content: input };
+    const userMessage: VoiceChatMessage = { role: 'user', content: input };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput('');
@@ -44,10 +59,10 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
 
     try {
       const assistantResponse = await askAssistant(newMessages);
-      const modelMessage: ChatMessage = { role: 'model', content: assistantResponse };
+      const modelMessage: VoiceChatMessage = { role: 'model', content: assistantResponse };
       setMessages([...newMessages, modelMessage]);
     } catch (error) {
-      const errorMessage: ChatMessage = {
+      const errorMessage: VoiceChatMessage = {
         role: 'model',
         content: 'Lo siento, he tenido un problema para responder. Por favor, inténtalo de nuevo.',
       };
@@ -58,6 +73,88 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
       scrollToBottom();
     }
   };
+
+  const startRecording = async () => {
+    if (!hasPermission || isRecording) return;
+    
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorderRef.current = new MediaRecorder(stream);
+        audioChunksRef.current = [];
+        
+        mediaRecorderRef.current.ondataavailable = (event) => {
+            audioChunksRef.current.push(event.data);
+        };
+
+        mediaRecorderRef.current.onstop = async () => {
+            const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+            const reader = new FileReader();
+            reader.readAsDataURL(audioBlob);
+            reader.onloadend = async () => {
+                const base64Audio = reader.result as string;
+                handleSendAudio(base64Audio);
+            };
+        };
+
+        mediaRecorderRef.current.start();
+        setIsRecording(true);
+    } catch (error) {
+        console.error("Error starting recording:", error);
+        // Handle no permission error more gracefully
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+      // Stop all media tracks to turn off the microphone indicator
+      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+    }
+  };
+  
+  const handleToggleRecording = () => {
+      if (isRecording) {
+          stopRecording();
+      } else {
+          startRecording();
+      }
+  }
+
+  const handleSendAudio = async (audioDataUri: string) => {
+    setIsLoading(true);
+    // Optimistically add a placeholder for the user's spoken message
+    const userMessage: VoiceChatMessage = { role: 'user', content: "..." };
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
+    scrollToBottom();
+
+    try {
+      const { text, audio } = await askAssistantVoice(audioDataUri);
+      
+      // Update the user message with the transcribed text and add the model response
+      const updatedUserMessage: VoiceChatMessage = { role: 'user', content: text.userInput };
+      const modelMessage: VoiceChatMessage = { role: 'model', content: text.modelResponse, audio: audio };
+      
+      setMessages([...messages, updatedUserMessage, modelMessage]);
+
+      if (audio) {
+        const audioPlayer = new Audio(audio);
+        audioPlayer.play();
+      }
+
+    } catch (error) {
+      const errorMessage: VoiceChatMessage = {
+        role: 'model',
+        content: 'Lo siento, he tenido un problema para procesar tu audio. Por favor, inténtalo de nuevo.',
+      };
+      setMessages([...messages, errorMessage]); // Revert to messages before optimistic update
+      console.error('Error calling voice assistant flow:', error);
+    } finally {
+      setIsLoading(false);
+      scrollToBottom();
+    }
+  }
 
   return (
     <>
@@ -113,7 +210,10 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
                               : 'bg-muted'
                           }`}
                         >
-                          {msg.content}
+                          <p>{msg.content}</p>
+                           {msg.role === 'model' && msg.audio && (
+                               <audio controls src={msg.audio} className="w-full mt-2 h-8" />
+                           )}
                         </div>
                       </div>
                     ))}
@@ -143,12 +243,21 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
-                        handleSend();
+                        handleSendText();
                       }
                     }}
                   />
-                  <Button size="icon" onClick={handleSend} disabled={isLoading || !input.trim()}>
+                  <Button size="icon" onClick={handleSendText} disabled={isLoading || !input.trim()}>
                     <PaperPlaneIcon className="w-5 h-5" />
+                  </Button>
+                  <Button 
+                    size="icon" 
+                    onClick={handleToggleRecording} 
+                    disabled={isLoading || !hasPermission}
+                    variant={isRecording ? 'destructive' : 'outline'}
+                    className={isRecording ? 'animate-pulse' : ''}
+                  >
+                    {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
                   </Button>
                 </div>
               </CardContent>

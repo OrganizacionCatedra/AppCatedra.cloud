@@ -17,6 +17,15 @@ export const chatMessageSchema = z.object({
   content: z.string(),
 });
 
+
+// Esquema para un mensaje de chat de voz
+export const voiceChatMessageSchema = z.object({
+  role: z.enum(['user', 'model']),
+  content: z.string(),
+  audio: z.string().optional(),
+});
+
+
 // Esquema para la entrada del flow del asistente
 export const AssistantInputSchema = z.object({
   history: z.array(chatMessageSchema).describe('El historial de la conversación actual.'),

@@ -40,7 +40,7 @@ const prompt = ai.definePrompt({
 });
 
 
-const assistantFlow = ai.defineFlow(
+export const assistantFlow = ai.defineFlow(
   {
     name: 'assistantFlow',
     inputSchema: AssistantInputSchema,
