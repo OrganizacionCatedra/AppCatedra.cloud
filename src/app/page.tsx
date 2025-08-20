@@ -1,5 +1,8 @@
 import Configurator from '@/components/configurator/configurator';
 import { ThemeToggle } from '@/components/theme-toggle';
+import ChatWidget from '@/components/configurator/chat-widget';
+import { productCategories } from '@/lib/products';
+import { plans } from '@/lib/plans';
 
 export default function Home({
   searchParams,
@@ -12,6 +15,10 @@ export default function Home({
         <ThemeToggle />
       </div>
       <Configurator searchParams={searchParams} />
+      <ChatWidget 
+        productContext={productCategories}
+        planContext={plans}
+      />
     </div>
   );
 }
