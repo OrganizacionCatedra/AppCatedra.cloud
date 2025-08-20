@@ -1,9 +1,7 @@
 'use server';
 import type { z } from 'zod';
-import type { customerInfoSchema, chatMessageSchema, voiceChatMessageSchema } from './schemas';
-import type { LucideProps, Icon as LucideIcon } from 'lucide-react';
-import type { ForwardRefExoticComponent, RefAttributes } from 'react';
-import { AssistantInputSchema } from './schemas';
+import type { customerInfoSchema, chatMessageSchema } from './schemas';
+import type { AssistantInputSchema } from './schemas';
 
 export interface ProductOption {
   id: string;
@@ -40,6 +38,13 @@ export interface SelectedProduct {
 }
 
 export type CustomerInfo = z.infer<typeof customerInfoSchema>;
-export type ChatMessage = z.infer<typeof chatMessageSchema>;
-export type VoiceChatMessage = z.infer<typeof voiceChatMessageSchema>;
+
+// This remains the fundamental type for displaying messages
+export type ChatMessage = {
+  role: 'user' | 'model';
+  content: string;
+  audio?: string; // Optional audio URL for model responses
+};
+
+
 export type AssistantInput = z.infer<typeof AssistantInputSchema>;

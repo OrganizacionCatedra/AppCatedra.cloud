@@ -9,10 +9,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { askAssistant } from '@/ai/flows/assistant-flow';
-import { askAssistantVoice } from '@/ai/flows/voice-assistant-flow';
-import type { VoiceChatMessage } from '@/lib/types';
+import type { ChatMessage } from '@/lib/types';
 import { Mic, MicOff } from 'lucide-react';
 
+interface VoiceResponse {
+    text: {
+        userInput: string;
+        modelResponse: string;
+    };
+    audio?: string;
+}
 
 interface ChatWidgetProps {
   productContext: any;
@@ -21,7 +27,7 @@ interface ChatWidgetProps {
 
 export default function ChatWidget({ productContext, planContext }: ChatWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<VoiceChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -53,7 +59,7 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
   const handleSendText = async () => {
     if (input.trim() === '' || isLoading) return;
 
-    const userMessage: VoiceChatMessage = { role: 'user', content: input };
+    const userMessage: ChatMessage = { role: 'user', content: input };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput('');
@@ -62,10 +68,10 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
 
     try {
       const assistantResponse = await askAssistant(newMessages);
-      const modelMessage: VoiceChatMessage = { role: 'model', content: assistantResponse };
+      const modelMessage: ChatMessage = { role: 'model', content: assistantResponse };
       setMessages([...newMessages, modelMessage]);
     } catch (error) {
-      const errorMessage: VoiceChatMessage = {
+      const errorMessage: ChatMessage = {
         role: 'model',
         content: 'Lo siento, he tenido un problema para responder. Por favor, inténtalo de nuevo.',
       };
@@ -79,7 +85,7 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
 
   const startRecording = async () => {
     if (!hasPermission) {
-        console.error("Cannot record without microphone permission.");
+        alert("Microphone permission is required for voice input.");
         return;
     }
     
@@ -88,16 +94,17 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
 
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorderRef.current = new MediaRecorder(stream);
+        mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'audio/webm' });
         
         mediaRecorderRef.current.ondataavailable = (event) => {
-            audioChunksRef.current.push(event.data);
+            if (event.data.size > 0) {
+              audioChunksRef.current.push(event.data);
+            }
         };
 
         mediaRecorderRef.current.onstop = () => {
             const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
             handleSendAudio(audioBlob);
-            // Stop all media tracks to turn off the microphone indicator
             stream.getTracks().forEach(track => track.stop());
         };
 
@@ -122,56 +129,67 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
           startRecording();
       }
   }
-
-  const blobToDataUri = (blob: Blob): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            if (typeof reader.result === 'string') {
-                resolve(reader.result);
-            } else {
-                reject('Failed to convert blob to Data URI');
-            }
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
-  }
   
   const handleSendAudio = async (audioBlob: Blob) => {
+    if (audioBlob.size === 0) {
+      console.warn("Attempted to send an empty audio blob.");
+      return;
+    }
+
     setIsLoading(true);
-    // Optimistically add a placeholder for the user's spoken message
-    const userMessagePlaceholder: VoiceChatMessage = { role: 'user', content: "..." };
+    const userMessagePlaceholder: ChatMessage = { role: 'user', content: "Procesando audio..." };
     setMessages(prev => [...prev, userMessagePlaceholder]);
     scrollToBottom();
 
-    try {
-      const audioDataUri = await blobToDataUri(audioBlob);
-      const { text, audio } = await askAssistantVoice(audioDataUri);
-      
-      // Replace placeholder with actual transcribed text and add model response
-      const updatedUserMessage: VoiceChatMessage = { role: 'user', content: text.userInput };
-      const modelMessage: VoiceChatMessage = { role: 'model', content: text.modelResponse, audio: audio };
-      
-      setMessages(prev => [...prev.slice(0, -1), updatedUserMessage, modelMessage]);
+    const reader = new FileReader();
+    reader.readAsDataURL(audioBlob);
+    reader.onloadend = async () => {
+      const base64Audio = reader.result as string;
+      const webhookUrl = process.env.NEXT_PUBLIC_N8N_VOICE_WEBHOOK_URL;
 
-      if (audio) {
-        const audioPlayer = new Audio(audio);
-        audioPlayer.play();
+      if (!webhookUrl) {
+          console.error("N8N_VOICE_WEBHOOK_URL is not set in environment variables.");
+          const errorMessage: ChatMessage = { role: 'model', content: 'La configuración del servicio de voz no está completa.' };
+          setMessages(prev => [...prev.slice(0, -1), errorMessage]);
+          setIsLoading(false);
+          return;
       }
+      
+      try {
+        const response = await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              audioDataUri: base64Audio,
+              history: messages.slice(0, -1) // Send history without the placeholder
+            }),
+        });
 
-    } catch (error) {
-      const errorMessage: VoiceChatMessage = {
-        role: 'model',
-        content: 'Lo siento, he tenido un problema para procesar tu audio. Por favor, inténtalo de nuevo.',
-      };
-      // Replace placeholder with an error message
-      setMessages(prev => [...prev.slice(0, -1), errorMessage]); 
-      console.error('Error calling voice assistant flow:', error);
-    } finally {
-      setIsLoading(false);
-      scrollToBottom();
-    }
+        if (!response.ok) {
+            throw new Error(`Webhook failed with status ${response.status}`);
+        }
+
+        const result: VoiceResponse = await response.json();
+        
+        const updatedUserMessage: ChatMessage = { role: 'user', content: result.text.userInput };
+        const modelMessage: ChatMessage = { role: 'model', content: result.text.modelResponse, audio: result.audio };
+        
+        setMessages(prev => [...prev.slice(0, -1), updatedUserMessage, modelMessage]);
+
+        if (result.audio) {
+          const audioPlayer = new Audio(result.audio);
+          audioPlayer.play();
+        }
+
+      } catch (error) {
+        console.error('Error calling voice webhook:', error);
+        const errorMessage: ChatMessage = { role: 'model', content: 'No se pudo procesar el audio. Inténtalo de nuevo.' };
+        setMessages(prev => [...prev.slice(0, -1), errorMessage]);
+      } finally {
+        setIsLoading(false);
+        scrollToBottom();
+      }
+    };
   }
 
 
@@ -231,7 +249,7 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
                         >
                           <p>{msg.content}</p>
                            {msg.role === 'model' && msg.audio && (
-                               <audio controls src={msg.audio} className="w-full mt-2 h-8" />
+                               <audio controls src={msg.audio} className="w-full mt-2 h-8" autoPlay/>
                            )}
                         </div>
                       </div>

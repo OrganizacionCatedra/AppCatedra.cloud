@@ -11,22 +11,13 @@ export const customerInfoSchema = z.object({
   }),
 });
 
-// Esquema para un único mensaje
+// Esquema para un único mensaje de texto
 export const chatMessageSchema = z.object({
   role: z.enum(['user', 'model']),
   content: z.string(),
 });
 
-
-// Esquema para un mensaje de chat de voz
-export const voiceChatMessageSchema = z.object({
-  role: z.enum(['user', 'model']),
-  content: z.string(),
-  audio: z.string().optional(),
-});
-
-
-// Esquema para la entrada del flow del asistente
+// Esquema para la entrada del flow del asistente de texto
 export const AssistantInputSchema = z.object({
   history: z.array(chatMessageSchema).describe('El historial de la conversación actual.'),
   context: z.object({
