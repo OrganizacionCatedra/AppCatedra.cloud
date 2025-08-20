@@ -135,7 +135,7 @@ export default function ProductSelector({ customerInfo, onSubmit, onBack }: Prod
                             <div className="flex items-center justify-between gap-4 mt-auto pt-4">
                                 {product.type === 'switch' && (
                                 <>
-                                    <span className="font-mono text-lg text-accent">
+                                    <span className="font-mono text-lg text-primary dark:text-accent">
                                     {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(product.price)}
                                     </span>
                                     <Switch
