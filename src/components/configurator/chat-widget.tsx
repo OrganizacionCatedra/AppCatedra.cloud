@@ -169,21 +169,30 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
             throw new Error(`Webhook failed with status ${response.status}`);
         }
 
-        const result: VoiceResponse = await response.json();
+        const result = await response.json();
         
-        const updatedUserMessage: ChatMessage = { role: 'user', content: result.text.userInput };
-        const modelMessage: ChatMessage = { role: 'model', content: result.text.modelResponse, audio: result.audio };
-        
-        setMessages(prev => [...prev.slice(0, -1), updatedUserMessage, modelMessage]);
+        // Defensive check to ensure the response has the expected structure
+        if (result && result.text && result.text.userInput && result.text.modelResponse) {
+          const typedResult = result as VoiceResponse;
+          const updatedUserMessage: ChatMessage = { role: 'user', content: typedResult.text.userInput };
+          const modelMessage: ChatMessage = { role: 'model', content: typedResult.text.modelResponse, audio: typedResult.audio };
+          
+          setMessages(prev => [...prev.slice(0, -1), updatedUserMessage, modelMessage]);
 
-        if (result.audio) {
-          const audioPlayer = new Audio(result.audio);
-          audioPlayer.play();
+          if (typedResult.audio) {
+            const audioPlayer = new Audio(typedResult.audio);
+            audioPlayer.play();
+          }
+        } else {
+            console.error("Received unexpected response structure from voice webhook:", result);
+            throw new Error("La respuesta del servicio de voz no tiene el formato esperado.");
         }
+
 
       } catch (error) {
         console.error('Error calling voice webhook:', error);
-        const errorMessage: ChatMessage = { role: 'model', content: 'No se pudo procesar el audio. Inténtalo de nuevo.' };
+        const errorMessageContent = error instanceof Error ? error.message : 'No se pudo procesar el audio. Inténtalo de nuevo.';
+        const errorMessage: ChatMessage = { role: 'model', content: errorMessageContent };
         setMessages(prev => [...prev.slice(0, -1), errorMessage]);
       } finally {
         setIsLoading(false);
