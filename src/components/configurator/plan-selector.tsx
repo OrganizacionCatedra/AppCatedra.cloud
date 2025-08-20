@@ -48,7 +48,7 @@ export default function PlanSelector({ onPlanSelect, onBack }: PlanSelectorProps
                             </CardHeader>
                             <CardContent className="flex-grow flex flex-col justify-between">
                                 <div className='text-center mb-8'>
-                                    <span className="font-headline text-4xl font-bold">${plan.price}</span>
+                                    <span className="font-headline text-4xl font-bold text-primary">${plan.price}</span>
                                     <span className="text-muted-foreground">/mes</span>
                                 </div>
                                 <ul className="space-y-3 text-sm">

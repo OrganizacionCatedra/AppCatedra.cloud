@@ -96,7 +96,12 @@ export default function Confirmation({ customerInfo, selectedProducts, totalCost
                            <ArrowLeft className="mr-2 h-4 w-4" />
                            Modificar Pedido
                        </Button>
-                       <Button onClick={handlePayment} size="lg" disabled={status === 'processing'} className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20">
+                       <Button 
+                         onClick={handlePayment} 
+                         size="lg" 
+                         disabled={status === 'processing'} 
+                         className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20"
+                       >
                            {status === 'processing' ? (
                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                            ) : null}
