@@ -33,7 +33,7 @@ export default function BackgroundPlexus() {
     () => ({
       background: {
         color: {
-          value: 'transparent',
+          value: 'hsl(222 47% 11%)',
         },
       },
       fpsLimit: 60,
@@ -56,7 +56,7 @@ export default function BackgroundPlexus() {
       },
       particles: {
         color: {
-          value: '#3b82f6', // Azul primario
+          value: '#624CAB', // Morado primario
         },
         links: {
           color: '#ffffff',
@@ -82,7 +82,7 @@ export default function BackgroundPlexus() {
           value: 80,
         },
         opacity: {
-          value: 0.2,
+          value: 0.5,
         },
         shape: {
           type: 'circle',

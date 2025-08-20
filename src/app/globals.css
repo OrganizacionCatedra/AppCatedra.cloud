@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 220 13% 18%;
+    --background: 222 47% 11%; /* Azul Marino Oscuro */
     --foreground: 0 0% 100%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 205 90% 45%; /* Cian/Azul brillante */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 185 90% 45%; /* Verde azulado brillante */
-    --accent-foreground: 220 13% 11%; /* Fondo para contraste */
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 205 90% 45%;
+    --card: 222 47% 11%;
+    --card-foreground: 0 0% 100%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 254 51% 51%; /* Morado (#624CAB) */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 47% 16%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 222 47% 16%;
+    --muted-foreground: 222 47% 64%;
+    --accent: 102 100% 50%; /* Verde Eléctrico (#7CFC00) */
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 47% 22%;
+    --input: 222 47% 16%;
+    --ring: 254 51% 51%;
     --radius: 0.8rem;
   }
 
   .dark {
-    --background: 220 13% 18%;
+    --background: 222 47% 11%; /* Azul Marino Oscuro */
     --foreground: 0 0% 100%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 205 90% 45%; /* Cian/Azul brillante */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 185 90% 45%; /* Verde azulado brillante */
-    --accent-foreground: 220 13% 11%; /* Fondo para contraste */
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 205 90% 45%;
+    --card: 222 47% 11%;
+    --card-foreground: 0 0% 100%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 254 51% 51%; /* Morado (#624CAB) */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222 47% 16%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 222 47% 16%;
+    --muted-foreground: 222 47% 64%;
+    --accent: 102 100% 50%; /* Verde Eléctrico (#7CFC00) */
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 47% 22%;
+    --input: 222 47% 16%;
+    --ring: 254 51% 51%;
   }
 }
 

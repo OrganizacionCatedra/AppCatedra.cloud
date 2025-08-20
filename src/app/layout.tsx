@@ -1,9 +1,9 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { Sora } from 'next/font/google'
+import { Inter } from 'next/font/google';
 
-const sora = Sora({ subsets: ['latin'], variable: '--font-sans', weight: ['300', '400', '500', '600', '700'] })
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="dark">
-      <body className={`${sora.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased`}>
         {children}
         <Toaster />
       </body>
