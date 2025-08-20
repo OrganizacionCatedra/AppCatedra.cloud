@@ -3,9 +3,11 @@ import { useEffect, useMemo, useState } from 'react';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { type Container, type ISourceOptions } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim'; 
+import { useTheme } from 'next-themes';
 
 export default function BackgroundPlexus() {
   const [init, setInit] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -23,7 +25,7 @@ export default function BackgroundPlexus() {
     () => ({
       background: {
         color: {
-          value: '#0F172A',
+          value: 'transparent',
         },
       },
       fpsLimit: 60,
@@ -40,17 +42,16 @@ export default function BackgroundPlexus() {
             distance: 140,
             links: {
               opacity: 1,
-              color: '#ffffff'
             },
           },
         },
       },
       particles: {
         color: {
-          value: '#7C3AED',
+          value: theme === 'dark' ? '#7C3AED' : '#1D4ED8',
         },
         links: {
-          color: '#ffffff',
+          color: theme === 'dark' ? '#ffffff' : '#0F172A',
           distance: 150,
           enable: true,
           opacity: 0.2,
@@ -89,7 +90,7 @@ export default function BackgroundPlexus() {
       },
       detectRetina: true,
     }),
-    [],
+    [theme],
   );
 
   if (init) {
