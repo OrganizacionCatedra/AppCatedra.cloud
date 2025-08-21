@@ -1,3 +1,4 @@
 // Flows will be imported for their side effects in this file.
 import './flows/assistant-flow';
 import './flows/voice-assistant-flow';
+import './tools/document-tools';
