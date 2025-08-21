@@ -18,7 +18,7 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: 'IA Solutions Configurator',
+  title: 'Configurador Cátedra',
   description: 'Configure y cotice su solución de IA a medida.',
 };
 
