@@ -32,8 +32,8 @@ export async function processOrder(payload: OrderPayload) {
         customer_name: payload.customerInfo.name,
         customer_email: payload.customerInfo.email,
         company: payload.customerInfo.company,
-        phone: payload.customerInfo.phone,
-        country: payload.customerInfo.country,
+        phone: payload.customerInfo.phone, // Campo añadido
+        country: payload.customerInfo.country, // Campo añadido
         total_amount: payload.totalCost,
         products: payload.selectedProducts.map(p => ({
             name: p.name,
