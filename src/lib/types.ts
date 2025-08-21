@@ -1,7 +1,7 @@
 'use server';
 import type { z } from 'zod';
-import type { customerInfoSchema, chatMessageSchema } from './schemas';
-import type { AssistantInputSchema } from './schemas';
+import type { customerInfoSchema } from './schemas';
+import type { AssistantInputSchema, chatMessageSchema } from './schemas';
 
 export interface ProductOption {
   id: string;
@@ -40,11 +40,7 @@ export interface SelectedProduct {
 export type CustomerInfo = z.infer<typeof customerInfoSchema>;
 
 // This remains the fundamental type for displaying messages
-export type ChatMessage = {
-  role: 'user' | 'model';
-  content: string;
-  audio?: string; // Optional audio URL for model responses
-};
+export type ChatMessage = z.infer<typeof chatMessageSchema>;
 
 
 export type AssistantInput = z.infer<typeof AssistantInputSchema>;

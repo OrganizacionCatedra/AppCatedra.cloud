@@ -15,6 +15,7 @@ export const customerInfoSchema = z.object({
 export const chatMessageSchema = z.object({
   role: z.enum(['user', 'model']),
   content: z.string(),
+  audio: z.string().optional(),
 });
 
 // Esquema para la entrada del flow del asistente de texto

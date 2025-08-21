@@ -145,18 +145,9 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
     reader.readAsDataURL(audioBlob);
     reader.onloadend = async () => {
       const base64Audio = reader.result as string;
-      const webhookUrl = process.env.NEXT_PUBLIC_N8N_VOICE_WEBHOOK_URL;
-
-      if (!webhookUrl) {
-          console.error("N8N_VOICE_WEBHOOK_URL is not set in environment variables.");
-          const errorMessage: ChatMessage = { role: 'model', content: 'La configuración del servicio de voz no está completa.' };
-          setMessages(prev => [...prev.slice(0, -1), errorMessage]);
-          setIsLoading(false);
-          return;
-      }
       
       try {
-        const response = await fetch(webhookUrl, {
+        const response = await fetch('/api/voice-assistant', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
@@ -166,7 +157,8 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
         });
 
         if (!response.ok) {
-            throw new Error(`Webhook failed with status ${response.status}`);
+            const errorData = await response.json();
+            throw new Error(errorData.error || `La API respondió con el estado ${response.status}`);
         }
 
         const result = await response.json();
@@ -184,16 +176,16 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
             audioPlayer.play();
           }
         } else {
-            console.error("Received unexpected response structure from voice webhook:", result);
+            console.error("Received unexpected response structure from voice API:", result);
             throw new Error("La respuesta del servicio de voz no tiene el formato esperado.");
         }
 
 
       } catch (error) {
-        console.error('Error calling voice webhook:', error);
+        console.error('Error calling voice API:', error);
         const errorMessageContent = error instanceof Error ? error.message : 'No se pudo procesar el audio. Inténtalo de nuevo.';
         const errorMessage: ChatMessage = { role: 'model', content: errorMessageContent };
-        setMessages(prev => [...prev.slice(0, -1), errorMessage]);
+        setMessages(prev => [...prev.slice(0, -1), { role: 'user', content: 'Error al procesar audio'}, errorMessage]);
       } finally {
         setIsLoading(false);
         scrollToBottom();
