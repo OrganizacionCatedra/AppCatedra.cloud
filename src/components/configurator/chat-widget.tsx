@@ -250,7 +250,7 @@ export default function ChatWidget({ productContext, planContext }: ChatWidgetPr
                         >
                           <p>{msg.content}</p>
                            {msg.role === 'model' && msg.audio && (
-                               <audio controls src={msg.audio} className="w-full mt-2 h-8" autoPlay/>
+                               <audio controls src={msg.audio} className="w-full mt-2 h-8" />
                            )}
                         </div>
                       </div>
