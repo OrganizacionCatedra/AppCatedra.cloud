@@ -7,26 +7,13 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { google } from 'googleapis';
-import * as fs from 'fs';
-import * as path from 'path';
 
 // Helper function to get the authentication client
 const getAuth = () => {
-  const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
-  if (!credentialsPath) {
-    throw new Error('La variable de entorno GOOGLE_APPLICATION_CREDENTIALS no está configurada.');
-  }
-
-  const absolutePath = path.resolve(process.cwd(), credentialsPath);
-  
-  if (!fs.existsSync(absolutePath)) {
-      throw new Error(`El archivo de credenciales no se encuentra en la ruta: ${absolutePath}`);
-  }
-
-  const credentials = JSON.parse(fs.readFileSync(absolutePath, 'utf8'));
-
+  // La librería de googleapis encontrará automáticamente las credenciales
+  // si la variable de entorno GOOGLE_APPLICATION_CREDENTIALS está configurada.
+  // No necesitamos leer el archivo manualmente.
   return new google.auth.GoogleAuth({
-    credentials,
     scopes: [
         'https://www.googleapis.com/auth/drive.readonly',
         'https://www.googleapis.com/auth/documents.readonly',
