@@ -1,5 +1,6 @@
 // src/app/api/voice-assistant/route.ts
-import { processVoice, VoiceInputSchema } from '@/ai/flows/voice-assistant-flow';
+import { processVoice } from '@/ai/flows/voice-assistant-flow';
+import { VoiceInputSchema } from '@/lib/schemas';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 

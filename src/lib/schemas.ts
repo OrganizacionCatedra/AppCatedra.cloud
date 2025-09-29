@@ -26,3 +26,16 @@ export const AssistantInputSchema = z.object({
     plans: z.any().describe('Un objeto JSON con todos los planes pre-diseñados.'),
   }),
 });
+
+// Esquema para la entrada del flow de voz
+export const VoiceInputSchema = z.object({
+  audioDataUri: z
+    .string()
+    .describe(
+      "El audio grabado por el usuario, como un data URI que debe incluir un MIME type y usar Base64 encoding. Formato esperado: 'data:<mimetype>;base64,<encoded_data>'."
+    ),
+  history: z.array(z.object({
+      role: z.enum(['user', 'model']),
+      content: z.string()
+  })).describe("El historial de la conversación.")
+});

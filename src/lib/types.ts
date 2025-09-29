@@ -1,6 +1,6 @@
 'use server';
 import type { z } from 'zod';
-import type { customerInfoSchema } from './schemas';
+import type { customerInfoSchema, VoiceInputSchema } from './schemas';
 import type { AssistantInputSchema, chatMessageSchema } from './schemas';
 
 export interface ProductOption {
@@ -44,3 +44,5 @@ export type ChatMessage = z.infer<typeof chatMessageSchema>;
 
 
 export type AssistantInput = z.infer<typeof AssistantInputSchema>;
+
+export type VoiceInput = z.infer<typeof VoiceInputSchema>;

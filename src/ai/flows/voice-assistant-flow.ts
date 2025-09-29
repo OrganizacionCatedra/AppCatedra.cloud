@@ -3,7 +3,6 @@
  * @fileOverview Un agente de IA para procesar interacciones de voz.
  *
  * - voiceAssistantFlow - El flow principal que maneja la transcripción, la respuesta de IA y la síntesis de voz.
- * - VoiceInputSchema - El esquema de entrada para el flow de voz.
  */
 
 import { ai } from '@/ai/genkit';
@@ -12,20 +11,8 @@ import { askAssistant } from './assistant-flow';
 import type { ChatMessage } from '@/lib/types';
 import { googleAI } from '@genkit-ai/googleai';
 import wav from 'wav';
-
-// Esquema para la entrada del flow de voz
-export const VoiceInputSchema = z.object({
-  audioDataUri: z
-    .string()
-    .describe(
-      "El audio grabado por el usuario, como un data URI que debe incluir un MIME type y usar Base64 encoding. Formato esperado: 'data:<mimetype>;base64,<encoded_data>'."
-    ),
-  history: z.array(z.object({
-      role: z.enum(['user', 'model']),
-      content: z.string()
-  })).describe("El historial de la conversación.")
-});
-export type VoiceInput = z.infer<typeof VoiceInputSchema>;
+import { VoiceInputSchema } from '@/lib/schemas';
+import type { VoiceInput } from '@/lib/types';
 
 
 const toWav = async (
